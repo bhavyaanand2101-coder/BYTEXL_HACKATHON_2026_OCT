@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "name": "CampusPulse — Smart Campus Analytics (KPMG Hackathon Build)",
+    "version": "5.0.0-FINAL",
+    "one_line_goal": "Ingest messy campus data (LMS, attendance, assessments, placement, feedback), enrich it with an explainable, CI-audited deterministic AI layer, and surface a ranked, humane advisor action list so faculty act on student success — not just watch it.",
+    "challenge": {
+      "organizer": "KPMG in India",
+      "brief": "Smart Campus Analytics: Predict, Optimize & Improve Student Success"
+    }
+  },
+  "weights": {
+    "academic": 0.25,
+    "attendance": 0.20,
+    "placement": 0.20,
+    "lms": 0.15,
+    "engagement": 0.10,
+    "skills": 0.10
+  },
+  "floors": {
+    "attendance_min": 57.0,
+    "cgpa_min": 4.7,
+    "backlog_max": 3
+  },
+  "review_band": {
+    "attendance": [57.0, 63.0],
+    "cgpa": [4.7, 5.3]
+  }
+}

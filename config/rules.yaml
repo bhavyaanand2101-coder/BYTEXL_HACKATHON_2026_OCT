@@ -1,0 +1,76 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# CampusPulse — Business Rules Configuration
+# Defines flag thresholds and advisor action templates.
+# One-line justification per value (contract requirement).
+# ──────────────────────────────────────────────────────────────────────────────
+
+flags:
+  strong_marks_weak_coding:
+    cgpa_min:                8.0   # High CGPA bar — isolates top academic performers
+    min_week:                4     # Need 4 weeks of data before pattern is meaningful
+    coding_submissions_max:  0     # Zero submissions = no coding activity at all
+    coding_score_pct_floor:  25    # Below cohort p25 = significantly below peers
+
+  early_disengagement:
+    min_week:                4     # 4-week window to establish a baseline trend
+    lms_delta_4w_max:       -0.40  # 40% drop in LMS usage = clear disengagement signal
+    attendance_min:          75.0  # Only fires for students who ARE physically present
+
+  passive_attender:
+    academic_standing: "Satisfactory"  # Targets students who appear fine on paper
+    # attendance_trend < 0 AND lms_trend < 0 AND engagement_trend < 0 all checked in code
+
+  hidden_talent:
+    cgpa_max:        6.5   # Below 6.5 = not an obvious high performer
+    skills_min:      75.0  # Strong skills index despite modest CGPA
+    momentum_value: "UP"   # Actively improving — worth extra support
+
+  assessment_integrity_review:
+    plag_avg_threshold: 90   # 90% similarity = almost certainly copied
+    # multi_ip and speed_anomaly are boolean flags set by assessment sub-score logic
+
+  silent_struggler:
+    score_max:          10   # Very low score (≤10/25) — nearly non-attempt
+    tab_switches_exact:  0   # Zero tab switches = no signs of external help-seeking
+    time_spent_min:     30   # But sat there for ≥30 min — frozen, not absent
+
+# ── Advisor action code templates ──────────────────────────────────────────────
+# Used by nl_layer to generate plain-language text from reason_codes.
+# These are the FROZEN templates. LLM may draft offline; runtime uses only these.
+action_templates:
+  LOW_ATTENDANCE:
+    code: LOW_ATTENDANCE
+    title: "Schedule attendance conversation"
+    body: "Attendance is {attendance_pct:.0f}% (cohort median: {cohort_median:.0f}%). A 15-minute check-in may surface barriers."
+    priority_driver: true   # Feeds Actionability component of priority_score
+
+  LOW_LMS:
+    code: LOW_LMS
+    title: "Check LMS access & assignment backlog"
+    body: "LMS activity is in cohort bottom quartile (score: {lms_index:.0f}/100). Unsubmitted assignments: {pending_assignments}."
+    priority_driver: true
+
+  LOW_ENGAGEMENT:
+    code: LOW_ENGAGEMENT
+    title: "Recommend a club or hackathon"
+    body: "Engagement index {engagement_index:.0f}/100 is below p25. One extracurricular can move this meaningfully."
+    priority_driver: true
+
+  CGPA_FLOOR:
+    code: CGPA_FLOOR
+    title: "Academic support referral"
+    body: "CGPA {cgpa:.2f} is below the {cgpa_min} threshold. Refer to academic support cell immediately."
+    priority_driver: false
+
+  PLACEMENT_GAP:
+    code: PLACEMENT_GAP
+    title: "Enrol in coding / aptitude prep"
+    body: "Placement index {placement_index:.0f}/100 despite academic_index {academic_index:.0f}/100. Coding prep would close this gap."
+    priority_driver: true
+
+  ASSESSMENT_INTEGRITY:
+    code: ASSESSMENT_INTEGRITY
+    title: "Integrity review (advisor only)"
+    body: "Integrity flag raised: plag_avg={plag_avg:.0f}%, multi_ip={multi_ip}, speed_anomaly={speed_anomaly}. Please review with student privately."
+    priority_driver: false  # Advisory only; never feeds tier or segment
+    visibility: advisor_only  # Never surfaced to student view

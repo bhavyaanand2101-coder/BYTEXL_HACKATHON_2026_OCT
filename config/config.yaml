@@ -1,0 +1,48 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# CampusPulse — Scoring & Pipeline Configuration
+# Every value has a one-line justification comment (contract requirement).
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Success Score weights (must sum to 1.00) ───────────────────────────────────
+weights:
+  academic:   0.25  # Largest weight: CGPA + backlogs are strongest placement predictor
+  attendance: 0.20  # Correlates with engagement and campus compliance
+  placement:  0.20  # Direct readiness signal (aptitude + coding + mock)
+  lms:        0.15  # Tracks self-directed learning behavior
+  engagement: 0.10  # Hackathons, clubs, certs — differentiators in placement
+  skills:     0.10  # Technical + soft-skill assessments
+
+# ── Hard floors (tier: priority_support auto-assigned below these) ─────────────
+floors:
+  attendance_min: 57.0  # Below 57%: chronic absenteeism — cannot be coached out quickly
+  cgpa_min:       4.7   # Below 4.7: academic standing at risk per institute policy
+  backlog_max:    3     # 3+ active backlogs: credit-hour burden blocks placement prep
+
+# ── Review band (tier: review for students in this range) ─────────────────────
+review_band:
+  attendance: [57.0, 63.0]   # Borderline zone — 6-point window above hard floor
+  cgpa:       [4.7,  5.3]    # Borderline zone — 0.6-point window above hard floor
+
+# ── Momentum (3-week EWMA) ────────────────────────────────────────────────────
+momentum:
+  ewma_weeks:      3    # 3 weeks balances recency vs noise
+  delta_threshold: 5.0  # 5-point swing is educationally meaningful; smaller is noise
+
+# ── Priority list ─────────────────────────────────────────────────────────────
+priority:
+  top_n_per_advisor: 10  # Advisor action list limited to 10 manageable items
+
+# ── Confidence levels (ordered high → low) ────────────────────────────────────
+confidence_levels: ["High", "Medium", "Low"]  # Displayed in UI per score card
+
+# ── Engagement sub-index ──────────────────────────────────────────────────────
+engagement:
+  winsor_pct:     95   # Winsorize at 95th pct to neutralise outlier overachievers
+  engagement_cap: 20   # Raw engagement units that map to 100 — tuned to cohort data
+
+# ── Assessment-specific ───────────────────────────────────────────────────────
+assessment:
+  expected_time_min:           30   # Python test designed for ~30 min; baseline for speed score
+  speed_anomaly_threshold_min: 15   # Under 15 min = likely not attempted in good faith
+  plag_review_threshold:       90   # Plagiarism ≥ 90% triggers advisor review note
+  multi_ip_review:            true  # Multiple IPs on same submission flagged for review

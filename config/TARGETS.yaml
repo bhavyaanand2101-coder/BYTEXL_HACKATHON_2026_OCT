@@ -1,0 +1,30 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# CampusPulse — Scoring Targets (FROZEN after first commit)
+# CI fails if this file is edited after the first commit that references it.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Identifies the exact model/rule version these targets were calibrated against.
+frozen_at_commit: null
+
+# ── Tier distribution targets (for monitoring, not enforcement) ────────────────
+# Expected share of cohort in each tier under normal operating conditions.
+# Used by /cohorts/gaps to surface systemic anomalies.
+tier_targets:
+  on_track:        0.60   # 60% of students should be on track — aspirational baseline
+  watchlist:       0.25   # 25% needing monitoring is within a healthy range
+  priority_support: 0.15  # >15% priority_support signals a systemic curriculum gap
+
+# ── Sub-index health targets ───────────────────────────────────────────────────
+# Values below these at cohort level indicate a systemic gap (surfaces in /cohorts/gaps).
+sub_index_targets:
+  academic:    55.0   # Cohort median academic index ≥ 55 is minimum acceptable
+  attendance:  70.0   # 70% cohort median attendance is a common institutional KPI
+  placement:   50.0   # 50 = students are, on average, placement-ready in basic terms
+  lms:         50.0   # Minimum LMS engagement — below this suggests platform friction
+  engagement:  30.0   # Engagement is harder; 30 is a realistic floor for early cohorts
+  skills:      45.0   # Skills baseline for mid-program cohort
+
+# ── Assessment baseline ────────────────────────────────────────────────────────
+assessment_targets:
+  mean_score_pct:      0.60   # Expect cohort mean ≥ 60% of max score (15/25)
+  integrity_flag_rate: 0.05   # Flag rate > 5% triggers a curriculum/invigilator review

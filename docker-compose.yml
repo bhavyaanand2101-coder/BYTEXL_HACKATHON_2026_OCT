@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: campuspulse_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: campuspulse_db
+      POSTGRES_USER: campuspulse
+      POSTGRES_PASSWORD: campuspulse_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campuspulse -d campuspulse_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
