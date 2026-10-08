@@ -79,3 +79,8 @@ forbidden_modules = [
     "fastapi", "uvicorn", "requests", "httpx", "aiohttp",
     "urllib", "socket", "subprocess", "os.system",
 ]
+
+# ── Vercel Deployment ────────────────────────────────────────────────────────
+[tool.vercel]
+entrypoint = "apps.api.main:app"
+

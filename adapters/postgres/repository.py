@@ -32,10 +32,21 @@ DATABASE_URL = os.getenv(
     "sqlite:///./campuspulse_local.db"
 )
 
+# On Vercel serverless functions, the root deployment directory is read-only.
+# If using the default SQLite database, copy to /tmp so write/session operations succeed.
+if os.getenv("VERCEL") and DATABASE_URL.startswith("sqlite"):
+    tmp_db_path = "/tmp/campuspulse_local.db"
+    src_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "campuspulse_local.db")
+    if not os.path.exists(tmp_db_path) and os.path.exists(src_db_path):
+        import shutil
+        shutil.copy2(src_db_path, tmp_db_path)
+    DATABASE_URL = f"sqlite:///{tmp_db_path}"
+
 # SQLite-specific connect args
 engine_args = {}
 if DATABASE_URL.startswith("sqlite"):
     engine_args["connect_args"] = {"check_same_thread": False}
+
 
 # Replace asyncpg with standard psycopg2/sqlite for synchronous repo operations if needed
 sync_db_url = DATABASE_URL.replace("+asyncpg", "")
