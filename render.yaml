@@ -15,3 +15,5 @@ services:
         value: "false"
       - key: STUDENT_ID_SALT
         value: campuspulse_salt_secret_2026
+      - key: PYTHONPATH
+        value: .

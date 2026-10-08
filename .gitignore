@@ -46,3 +46,6 @@ data/quarantine/*.parquet
 # OS specific
 .DS_Store
 Thumbs.db
+
+# Agent & IDE caches
+.kilo/

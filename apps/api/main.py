@@ -10,6 +10,7 @@ import datetime
 import os
 import shutil
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -70,10 +71,28 @@ from scripts.boot_check import run_boot_check
 from services.enrichment.nl_layer import render_advisor_notes
 from services.pipeline import execute_pipeline, load_config
 
+# Global variables for hashes
+CONFIG_HASH = "c4520cb10d798f6b"
+TARGETS_HASH = "e1c24214d03ca16d"
+INGESTION_RUNS_CACHE: List[Dict[str, Any]] = []
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global CONFIG_HASH, TARGETS_HASH
+    try:
+        CONFIG_HASH, TARGETS_HASH = run_boot_check()
+    except SystemExit:
+        pass  # For tests or dev reload if needed
+    init_db()
+    yield
+
+
 app = FastAPI(
     title="CampusPulse API",
     description="Explainable Student Success & Placement Readiness Operating System",
     version="5.0.0",
+    lifespan=lifespan,
 )
 
 # CORS middleware
@@ -85,21 +104,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global variables for hashes
-CONFIG_HASH = "c4520cb10d798f6b"
-TARGETS_HASH = "e1c24214d03ca16d"
-INGESTION_RUNS_CACHE: List[Dict[str, Any]] = []
-
-
-@app.on_event("startup")
-def on_startup():
-    global CONFIG_HASH, TARGETS_HASH
-    try:
-        CONFIG_HASH, TARGETS_HASH = run_boot_check()
-    except SystemExit:
-        pass  # For tests or dev reload if needed
-    init_db()
-
 
 def make_envelope(data: Any, request: Optional[Request] = None) -> Dict[str, Any]:
     req_id = request.headers.get("x-request-id", str(uuid.uuid4())[:8]) if request else str(uuid.uuid4())[:8]
@@ -108,7 +112,7 @@ def make_envelope(data: Any, request: Optional[Request] = None) -> Dict[str, Any
         "meta": {
             "config_hash": CONFIG_HASH,
             "targets_hash": TARGETS_HASH,
-            "generated_at": datetime.datetime.utcnow().isoformat(),
+            "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "request_id": req_id,
         },
     }
@@ -177,6 +181,22 @@ def get_dashboard():
         with open(static_file, "r", encoding="utf-8") as f:
             return f.read()
     return "<h1>CampusPulse API v5.0</h1><p>Dashboard UI static file not found.</p>"
+
+
+# ── Firebase Config ─────────────────────────────────────────────────────────
+
+@app.get("/api/v1/auth/firebase-config")
+def get_firebase_config():
+    """Return public client Firebase configuration from environment or defaults."""
+    return make_envelope({
+        "apiKey": os.getenv("FIREBASE_API_KEY", "AIzaSyA7SpSw4TIIv52eZgUq31yMsbjk0eQRsKI"),
+        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", "hackxl.firebaseapp.com"),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID", "hackxl"),
+        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", "hackxl.firebasestorage.app"),
+        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID", "765716719209"),
+        "appId": os.getenv("FIREBASE_APP_ID", "1:765716719209:web:f7c3e3d1c19a1e530d24f8"),
+        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID", "G-K373KRXX7T"),
+    })
 
 
 # ── Health & Metrics ──────────────────────────────────────────────────────────
@@ -699,7 +719,7 @@ def get_excellence_overview(db: Session = Depends(get_db)):
             "no_of_students_rated": len(EXCELLENCE_NOMINATIONS),
         },
         "history": [
-            {"period": "October 2026", "status": "Submitted" if EXCELLENCE_NOMINATIONS else "Not yet started", "submitted_date": datetime.datetime.utcnow().strftime("%Y-%m-%d") if EXCELLENCE_NOMINATIONS else "-", "action": "Start Review"},
+            {"period": "October 2026", "status": "Submitted" if EXCELLENCE_NOMINATIONS else "Not yet started", "submitted_date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d") if EXCELLENCE_NOMINATIONS else "-", "action": "Start Review"},
             {"period": "September 2026", "status": "Missed", "submitted_date": "-", "action": "-"},
             {"period": "August 2026", "status": "Missed", "submitted_date": "-", "action": "-"},
             {"period": "July 2026", "status": "Missed", "submitted_date": "-", "action": "-"},
@@ -729,7 +749,7 @@ async def nominate_excellence_student(request: Request, db: Session = Depends(ge
         "rating": rating,
         "remarks": remarks,
         "nominated_by": "Dr. Ananya Sharma",
-        "nominated_at": datetime.datetime.utcnow().isoformat(),
+        "nominated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "status": "APPROVED_FOR_PLACEMENT_DRIVE",
     }
     EXCELLENCE_NOMINATIONS.append(nomination)
@@ -1378,7 +1398,7 @@ def run_live_ast_verification():
         "purity": "100% AST Pure (Zero LLM / Zero Network I/O)",
         "scanned_files_count": scanned_count,
         "verified_files": verified_files,
-        "timestamp": datetime.datetime.utcnow().isoformat(),
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     })
 
 

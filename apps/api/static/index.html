@@ -9,61 +9,93 @@
   <link rel="alternate icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <!-- Firebase SDK (v10 Compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+  <script>
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyA7SpSw4TIIv52eZgUq31yMsbjk0eQRsKI",
+      authDomain: "hackxl.firebaseapp.com",
+      projectId: "hackxl",
+      storageBucket: "hackxl.firebasestorage.app",
+      messagingSenderId: "765716719209",
+      appId: "1:765716719209:web:f7c3e3d1c19a1e530d24f8",
+      measurementId: "G-K373KRXX7T"
+    };
+    window.firebaseConfig = firebaseConfig;
+    if (typeof firebase !== 'undefined' && firebase.apps && !firebase.apps.length) {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        if (firebase.analytics) {
+          firebase.analytics();
+        }
+      } catch (e) {
+        console.warn('Firebase init:', e);
+      }
+    }
+  </script>
   <style>
     :root {
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
 
-      /* Minimal Clean Institutional Palette */
-      --bg-app: #f8fafc;
+      /* Stitch Design System: Compassionate Guidance Tokens */
+      --bg-app: #f8f9ff;
       --bg-surface: #ffffff;
-      --bg-subtle: #f1f5f9;
-      --bg-hover: #f8fafc;
+      --bg-subtle: #eff4ff;
+      --bg-container: #e6eeff;
+      --bg-hover: #f1f5fd;
 
       --border-color: #e2e8f0;
       --border-subtle: #edf2f7;
-      --border-focus: #0284c7;
+      --border-focus: #004ac6;
 
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --text-dim: #94a3b8;
+      --text-main: #0d1c2f;
+      --text-muted: #434655;
+      --text-dim: #737686;
 
-      /* CampusPulse Brand Colors */
-      --primary-blue: #0284c7;
-      --primary-blue-hover: #0369a1;
-      --primary-blue-subtle: #e0f2fe;
-      --primary-blue-border: #bae6fd;
+      /* Stitch Brand Colors (Compassionate Guidance) */
+      --primary-blue: #004ac6;
+      --primary-blue-hover: #003ea8;
+      --primary-blue-subtle: #eff4ff;
+      --primary-blue-border: #bfdbfe;
+      --primary-accent: #2563eb;
 
-      --accent-orange: #ea580c;
-      --accent-orange-light: #f97316;
-      --accent-orange-subtle: #ffedd5;
+      --accent-secondary: #712ae2;
+      --accent-secondary-subtle: #f3e8ff;
+      --accent-secondary-border: #ddd6fe;
 
-      /* Semantic Tiers */
-      --tier-ps-bg: #fef2f2;
+      --accent-orange: #d97706;
+      --accent-orange-light: #f59e0b;
+      --accent-orange-subtle: #fef3c7;
+
+      /* Status Tiers (Stitch: Guidance-first status accents) */
+      --tier-ps-bg: #fee2e2;
       --tier-ps-fg: #991b1b;
-      --tier-ps-border: #fecaca;
+      --tier-ps-border: #fca5a5;
 
-      --tier-rev-bg: #fefce8;
-      --tier-rev-fg: #854d0e;
-      --tier-rev-border: #fef08a;
+      --tier-rev-bg: #fef3c7;
+      --tier-rev-fg: #d97706;
+      --tier-rev-border: #fde68a;
 
       --tier-wl-bg: #eff6ff;
-      --tier-wl-fg: #1e40af;
+      --tier-wl-fg: #004ac6;
       --tier-wl-border: #bfdbfe;
 
-      --tier-ot-bg: #f0fdf4;
-      --tier-ot-fg: #166534;
-      --tier-ot-border: #bbf7d0;
+      --tier-ot-bg: #ecfdf5;
+      --tier-ot-fg: #059669;
+      --tier-ot-border: #a7f3d0;
 
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --shadow-ambient: 0 4px 16px -2px rgba(13, 28, 47, 0.05), 0 2px 6px -1px rgba(13, 28, 47, 0.02);
+      --shadow-card: 0 8px 24px -4px rgba(13, 28, 47, 0.06), 0 2px 6px -1px rgba(13, 28, 47, 0.02);
     }
 
     [data-theme="dark"] {
@@ -295,7 +327,7 @@
       background: var(--bg-app);
     }
     .top-navbar {
-      height: 56px;
+      height: 60px;
       background: var(--bg-surface);
       border-bottom: 1px solid var(--border-color);
       display: flex;
@@ -304,74 +336,128 @@
       padding: 0 24px;
       z-index: 30;
       flex-shrink: 0;
+      gap: 20px;
     }
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      flex: 1;
+      max-width: 440px;
     }
     .sidebar-toggle-btn {
       background: transparent;
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
-      padding: 5px 8px;
+      padding: 6px 9px;
       cursor: pointer;
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .sidebar-toggle-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      border-color: #cbd5e1;
     }
     .search-pill-box {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: var(--bg-subtle);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      padding: 5px 12px;
-      width: 320px;
+      border-radius: 20px;
+      padding: 6px 14px;
+      flex: 1;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
     }
     .search-pill-box:hover {
-      border-color: #cbd5e1;
+      border-color: #94a3b8;
       background: #ffffff;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
     }
-    .search-mock-text { font-size: 0.8rem; color: var(--text-muted); flex: 1; }
+    .search-mock-text { font-size: 0.82rem; color: var(--text-muted); flex: 1; }
     .search-cmd-badge {
       font-size: 0.68rem;
-      padding: 2px 5px;
+      padding: 2px 6px;
       background: #ffffff;
       border: 1px solid var(--border-color);
-      border-radius: 4px;
-      color: var(--text-muted);
+      border-radius: 6px;
+      color: var(--text-dim);
       font-family: var(--font-mono);
+      font-weight: 600;
     }
 
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .role-selector-pill {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      color: var(--text-main);
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.15s ease;
+      font-family: var(--font-sans);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+      max-width: 260px;
+    }
+    .role-selector-pill:hover, .role-selector-pill:focus {
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
     .user-profile-badge {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
+      gap: 9px;
+      padding: 4px 10px 4px 4px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      border-radius: 24px;
       cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .user-profile-badge:hover {
+      border-color: #cbd5e1;
+      background: var(--bg-subtle);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
     }
     .user-avatar {
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      background: #e2e8f0;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      color: var(--text-muted);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(30, 64, 175, 0.2);
+      flex-shrink: 0;
     }
-    .user-name-label { font-size: 0.82rem; font-weight: 600; color: #1e293b; }
+    .user-name-label { 
+      font-size: 0.82rem; 
+      font-weight: 600; 
+      color: var(--text-main); 
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
 
     /* Content Area */
     .main-content {
@@ -418,105 +504,140 @@
       gap: 10px;
     }
 
-    /* Buttons */
+    /* Buttons - Stitch Humane Guidance Spec */
     .btn {
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: var(--radius-sm);
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 600;
       border: 1px solid transparent;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.15s ease;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
       text-decoration: none;
     }
-    .btn-primary { background: var(--primary-blue); color: #ffffff; }
-    .btn-primary:hover { background: var(--primary-blue-hover); }
-    .btn-outline { background: #ffffff; border-color: var(--border-color); color: #334155; }
-    .btn-outline:hover { background: var(--bg-subtle); border-color: #cbd5e1; }
-    .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+    .btn-primary { 
+      background: var(--primary-accent); 
+      color: #ffffff; 
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
+    }
+    .btn-primary:hover { 
+      background: var(--primary-blue-hover); 
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-outline { 
+      background: #ffffff; 
+      border-color: var(--border-color); 
+      color: var(--text-main); 
+    }
+    .btn-outline:hover { 
+      background: var(--bg-subtle); 
+      border-color: #cbd5e1; 
+      color: var(--primary-blue);
+    }
+    .btn-sm { padding: 5px 12px; font-size: 0.78rem; border-radius: 6px; }
     .btn-split {
       display: flex;
       align-items: center;
-      background: var(--primary-blue);
+      background: var(--primary-accent);
       color: #ffffff;
       border-radius: var(--radius-sm);
       overflow: hidden;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
     }
     .btn-split button {
       background: transparent;
       border: none;
       color: #ffffff;
       font-weight: 600;
-      padding: 7px 14px;
-      font-size: 0.82rem;
+      padding: 8px 16px;
+      font-size: 0.84rem;
       cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .btn-split button:hover {
+      background: rgba(255,255,255,0.12);
     }
     .btn-split .btn-split-arrow {
       border-left: 1px solid rgba(255,255,255,0.25);
-      padding: 7px 10px;
+      padding: 8px 10px;
     }
 
-    /* Cards */
+    /* Cards - Stitch Spec */
     .card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 18px 20px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-ambient);
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .card:hover {
+      box-shadow: var(--shadow-card);
+      border-color: #cbd5e1;
     }
 
-    /* Alert Banner */
+    /* Alert Banner - Warm Nurturing Scaffolding */
     .alert-banner {
-      background: #fefce8;
-      border: 1px solid #fef08a;
-      border-radius: var(--radius-sm);
-      padding: 12px 16px;
-      margin-bottom: 18px;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.85rem;
-      color: #713f12;
+      font-size: 0.86rem;
+      color: #92400e;
+      box-shadow: 0 2px 8px -2px rgba(217, 119, 6, 0.08);
     }
-    .alert-banner strong { font-weight: 600; color: #854d0e; }
+    .alert-banner strong { font-weight: 700; color: #b45309; }
     .alert-banner a { color: var(--primary-blue); text-decoration: underline; cursor: pointer; font-weight: 600; }
 
     /* KPI Row */
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 14px;
-      margin-bottom: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
     }
     .kpi-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 16px 18px;
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
+      box-shadow: var(--shadow-ambient);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+      border-color: #cbd5e1;
     }
     .kpi-icon-circle {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.25rem;
       flex-shrink: 0;
     }
-    .kpi-icon-circle.green { background: #dcfce7; color: #166534; }
-    .kpi-icon-circle.red { background: #fee2e2; color: #991b1b; }
-    .kpi-icon-circle.blue { background: #e0f2fe; color: #0369a1; }
-    .kpi-icon-circle.amber { background: #fef3c7; color: #92400e; }
+    .kpi-icon-circle.green { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .kpi-icon-circle.red { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .kpi-icon-circle.blue { background: #eff6ff; color: #004ac6; border: 1px solid #bfdbfe; }
+    .kpi-icon-circle.amber { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
     .kpi-info { flex: 1; }
-    .kpi-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
-    .kpi-value { font-size: 1.45rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main); line-height: 1.2; margin-top: 2px; }
+    .kpi-label { font-size: 0.76rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.01em; }
+    .kpi-value { font-size: 1.6rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main); line-height: 1.2; margin-top: 2px; }
+
 
     /* Filter Bar */
     .filter-bar {
@@ -584,36 +705,41 @@
       border-bottom-color: var(--accent-orange);
     }
 
-    /* Tables */
+    /* Tables - Stitch Relational Care Roster Spec */
     .table-container {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-ambient);
       overflow-x: auto;
     }
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       text-align: left;
     }
     .data-table th {
-      background: #fafafa;
-      color: #64748b;
-      font-weight: 600;
-      font-size: 0.75rem;
+      background: #f8fafc;
+      color: var(--text-dim);
+      font-weight: 700;
+      font-size: 0.74rem;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 10px 14px;
+      letter-spacing: 0.05em;
+      padding: 12px 18px;
       border-bottom: 1px solid var(--border-color);
     }
     .data-table td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border-subtle);
-      color: #334155;
+      padding: 14px 18px;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--text-main);
       vertical-align: middle;
+      transition: background-color 0.15s ease;
     }
-    .data-table tr:hover td { background-color: var(--bg-hover); }
+    .data-table tr:hover td { 
+      background-color: #f8faff; 
+    }
+
 
     /* Semantic Badges */
     .tier-badge {
@@ -1398,25 +1524,31 @@
       padding: 0 10px;
     }
 
-    /* User Profile Dropdown Menu */
+    /* User Profile Dropdown Menu - Clean Glass Card */
     .user-profile-wrapper {
       position: relative;
     }
     .user-profile-dropdown {
       position: absolute;
-      top: 48px;
+      top: 50px;
       right: 0;
-      width: 250px;
+      width: 270px;
       background: #ffffff;
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
-      padding: 14px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 36px -4px rgba(15, 23, 42, 0.16), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+      padding: 16px;
       display: none;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       z-index: 100;
+      animation: dropdownFadeIn 0.15s ease-out;
     }
+    @keyframes dropdownFadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
 
     /* Toast */
     #toast-container {
@@ -2060,56 +2192,68 @@
         </div>
 
         <div class="nav-right">
-          <!-- Active Role Pill Indicator -->
-          <div id="active-role-indicator" class="active-role-pill role-pill-advisor" title="Active Platform Perspective">
-            <span id="active-role-icon">👨‍🏫</span>
-            <span id="active-role-badge-text">Faculty Advisor</span>
-          </div>
-
-          <button data-roles="dean admin" class="btn btn-sm" onclick="switchNav('kpmg-showcase')" style="background:linear-gradient(135deg, #4f46e5, #6366f1); color:#ffffff; font-weight:700; border:none; box-shadow:0 2px 10px rgba(99,102,241,0.35); display:flex; align-items:center; gap:6px;">
-            <span>🏆</span> KPMG Showcase &amp; Deck
+          <!-- Quick Tools Group -->
+          <button data-roles="dean admin" class="btn btn-sm" onclick="switchNav('kpmg-showcase')" style="background:linear-gradient(135deg, #4f46e5, #6366f1); color:#ffffff; font-weight:700; border:none; box-shadow:0 2px 10px rgba(99,102,241,0.3); display:flex; align-items:center; gap:6px; border-radius:20px; padding:6px 12px;">
+            <span>🏆</span> KPMG Deck
           </button>
 
-          <button class="btn btn-sm btn-outline" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" style="padding: 4px 8px; font-size: 1rem; margin-right: 4px;">
+          <button class="btn btn-sm btn-outline" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" style="padding: 6px 10px; font-size: 0.95rem; border-radius: 20px;">
             🌓
           </button>
-          <button class="btn btn-sm btn-outline" onclick="toggleAssistantDrawer()">
-            <span>✨</span> Ask CampusPulse
+          
+          <button class="btn btn-sm btn-outline" onclick="toggleAssistantDrawer()" style="border-radius: 20px; padding: 6px 12px;">
+            <span>✨</span> Ask Assistant
           </button>
 
-          <select class="filter-select" id="role-selector" onchange="handleRoleChange(this.value)" title="Switch Active Role Perspective">
-            <option value="dean">🏛️ Prof. Rajesh Gupta (Dean - Superadmin)</option>
-            <option value="hod">👨‍💼 Dr. S. K. Venkatraman (HOD CSE - Admin)</option>
-            <option value="teacher">👩‍🏫 Dr. Ananya Sharma (Teacher / Faculty)</option>
-            <option value="student">🎓 Aarav Sharma (Student under Teacher)</option>
-            <option value="recruiter">💼 Corporate Recruiter (Hiring Partner)</option>
-          </select>
+          <!-- Divider -->
+          <div style="height: 24px; width: 1px; background: var(--border-color); margin: 0 4px;"></div>
 
+          <!-- Role Perspective Selector -->
+          <div style="display:flex; align-items:center; gap:6px;">
+            <select class="role-selector-pill" id="role-selector" onchange="handleRoleChange(this.value)" title="Switch Active Role Perspective">
+              <option value="dean">🏛️ Dean (Superadmin)</option>
+              <option value="hod">👨‍💼 HOD CSE (Admin)</option>
+              <option value="teacher">👩‍🏫 Faculty Mentor</option>
+              <option value="student">🎓 Enrolled Student</option>
+              <option value="recruiter">💼 Corporate Recruiter</option>
+            </select>
+          </div>
+
+          <!-- User Profile Dropdown Badge -->
           <div class="user-profile-wrapper">
-            <div class="user-profile-badge" id="user-profile-badge" onclick="toggleUserDropdown()">
+            <div class="user-profile-badge" id="user-profile-badge" onclick="toggleUserDropdown()" title="Account & Profile Settings">
               <div class="user-avatar" id="nav-user-avatar">AS</div>
-              <span class="user-name-label" id="nav-user-name">Dr. Ananya Sharma</span>
-              <span style="font-size:0.7rem; color:var(--text-muted);">▾</span>
+              <span class="user-name-label" id="nav-user-name">Dr. Ananya</span>
+              <span style="font-size:0.65rem; color:var(--text-dim); margin-left:2px;">▾</span>
             </div>
             <div class="user-profile-dropdown" id="user-profile-dropdown">
-              <div style="display:flex; align-items:center; gap:10px; padding-bottom:8px; border-bottom:1px solid var(--border-color);">
-                <div class="user-avatar" id="dropdown-user-avatar" style="width:36px; height:36px; font-size:0.9rem;">AS</div>
+              <div style="display:flex; align-items:center; gap:12px; padding-bottom:10px; border-bottom:1px solid #f1f5f9;">
+                <div class="user-avatar" id="dropdown-user-avatar" style="width:40px; height:40px; font-size:0.95rem;">AS</div>
                 <div style="flex:1; overflow:hidden;">
-                  <div style="font-size:0.85rem; font-weight:700; color:#0f172a;" id="dropdown-user-name">Dr. Ananya Sharma</div>
-                  <div style="font-size:0.72rem; color:var(--text-muted); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" id="dropdown-user-email">ananya.sharma@campuspulse.edu</div>
+                  <div style="font-size:0.88rem; font-weight:700; color:var(--text-main);" id="dropdown-user-name">Dr. Ananya Sharma</div>
+                  <div style="font-size:0.73rem; color:var(--text-muted); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" id="dropdown-user-email">ananya.sharma@campuspulse.edu</div>
                 </div>
               </div>
-              <div style="font-size:0.75rem; color:var(--text-muted); padding:4px 0;">
-                <div>Role: <strong style="color:var(--primary-blue);" id="dropdown-user-role">Faculty Advisor (CSE)</strong></div>
-                <div style="margin-top:2px;">Auth: <span style="color:#166534; font-weight:600;" id="dropdown-auth-type">Firebase Authenticated</span></div>
+              <div style="padding:4px 0; font-size:0.75rem; color:var(--text-muted); display:flex; flex-direction:column; gap:3px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span>Active Role:</span>
+                  <span class="active-role-pill role-pill-advisor" id="active-role-indicator" style="padding:2px 8px; font-size:0.68rem;">
+                    <span id="active-role-icon">👩‍🏫</span>
+                    <span id="active-role-badge-text">Faculty</span>
+                  </span>
+                </div>
+                <div style="margin-top:2px;">Auth: <span style="color:#166534; font-weight:600;" id="dropdown-auth-type">Firebase</span></div>
               </div>
-              <button data-roles="advisor admin" class="btn btn-outline btn-sm" onclick="switchNav('educator-reports'); toggleUserDropdown();" style="width:100%; justify-content:center;">📈 My Educator Profile</button>
-              <button class="btn btn-outline btn-sm" onclick="openFirebaseConfigModal(); toggleUserDropdown();" style="width:100%; justify-content:center;">⚙️ Firebase Credentials</button>
-              <button class="btn btn-sm" onclick="handleFirebaseSignOut()" style="width:100%; justify-content:center; background:#fee2e2; color:#991b1b; border:1px solid #fecaca; margin-top:2px;">🚪 Sign Out</button>
+              <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+                <button data-roles="advisor admin" class="btn btn-outline btn-sm" onclick="switchNav('educator-reports'); toggleUserDropdown();" style="width:100%; justify-content:flex-start;">📈 My Educator Profile</button>
+                <button class="btn btn-outline btn-sm" onclick="openFirebaseConfigModal(); toggleUserDropdown();" style="width:100%; justify-content:flex-start;">⚙️ Firebase Credentials</button>
+                <button class="btn btn-sm" onclick="handleFirebaseSignOut()" style="width:100%; justify-content:flex-start; background:#fef2f2; color:#991b1b; border:1px solid #fee2e2; margin-top:2px;">🚪 Sign Out</button>
+              </div>
             </div>
           </div>
         </div>
       </header>
+
 
       <!-- CONTENT CONTAINER -->
       <main class="main-content">
@@ -2119,78 +2263,93 @@
           <!-- VIEW 1: ADVISOR ACTION LIST / EDUCATOR SESSIONS -->
           <!-- ════════════════════════════════════════════════════════════════════ -->
           <div id="view-action-list" class="tab-view active">
-            <div class="breadcrumbs"><span>Home</span> / <span class="current">Advisor Action List</span></div>
+            <div class="breadcrumbs"><span>Home</span> / <span>Campus Pulse</span> / <span class="current">Educator &amp; Advisor Workstation</span></div>
 
             <div class="page-header-row">
-              <div class="page-title">
-                <span>Educator Session</span>
-                <select class="filter-select" style="font-size:0.9rem; font-weight:600; margin-left:8px;" onchange="loadActionList()">
-                  <option>Parul Trainers (CSE Dept)</option>
-                  <option>KRM Trainers</option>
-                </select>
+              <div>
+                <div class="page-title" style="color:var(--text-main); font-size:1.6rem; letter-spacing:-0.02em;">
+                  <span>Educator &amp; Advisor Dashboard</span>
+                  <span class="brand-tag" style="font-size:0.72rem; padding:3px 8px; background:var(--bg-subtle); color:var(--primary-blue); font-weight:700; border-radius:20px; border:1px solid var(--primary-blue-border);">Compassionate Guidance OS</span>
+                </div>
+                <div style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">
+                  Active Cohort: <strong>Computer Science &amp; Engineering</strong> &bull; Proactive student scaffolding and early relational outreach
+                </div>
               </div>
               <div class="header-actions-group">
-                <button class="btn btn-outline" onclick="loadActionList()">🔄 Refresh</button>
+                <select class="filter-select" style="font-size:0.84rem; font-weight:600; padding:8px 12px;" onchange="loadActionList()">
+                  <option>Parul Trainers (CSE Dept)</option>
+                  <option>KRM Trainers (Core Faculty)</option>
+                </select>
+                <button class="btn btn-outline" onclick="loadActionList()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                  Sync Live Roster
+                </button>
                 <div class="btn-split">
-                  <button onclick="openInterventionModal()">+ Log A Session</button>
+                  <button onclick="openInterventionModal()">+ Log 1:1 Session</button>
                   <button class="btn-split-arrow" onclick="openInterventionModal()">▾</button>
                 </div>
               </div>
             </div>
 
             <div class="alert-banner" id="alert-banner-box">
-              <div>
-                <strong>⚠️ Priority Attention:</strong> 3 students currently triggered hard-floor criteria (Attendance &lt; 57% or CGPA &lt; 4.7). <a onclick="filterByHardFloor()">Click here to review pinned records</a>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.2rem;">🤝</span>
+                <div>
+                  <strong>Check-in Outreach Recommended:</strong> 3 students currently triggered early threshold review criteria (Attendance &lt; 57% or CGPA &lt; 4.7).
+                  <a onclick="filterByHardFloor()" style="margin-left:6px; font-weight:700;">Open Case Reviews &rarr;</a>
+                </div>
               </div>
-              <span style="cursor:pointer; color:#a16207;" onclick="document.getElementById('alert-banner-box').style.display='none'">✕</span>
+              <span style="cursor:pointer; color:#b45309; font-weight:700; padding:2px 6px;" onclick="document.getElementById('alert-banner-box').style.display='none'">✕</span>
             </div>
+
 
             <div class="kpi-row">
               <div class="kpi-card">
-                <div class="kpi-icon-circle red">⚠️</div>
+                <div class="kpi-icon-circle amber" style="background:#fef3c7; color:#d97706; border-color:#fde68a;">🤝</div>
                 <div class="kpi-info">
-                  <div class="kpi-label">Priority Support</div>
-                  <div class="kpi-value" id="kpi-ps">--</div>
+                  <div class="kpi-label">Needs Support</div>
+                  <div class="kpi-value" id="kpi-ps" style="color:#d97706;">--</div>
                   <div class="kpi-delta-row">
-                    <span class="kpi-delta-chip delta-rose">● Critical Roster</span>
-                    <span class="kpi-context-line" id="kpi-ps-context">3 triggered hard-floor criteria</span>
+                    <span class="kpi-delta-chip" style="background:#fef3c7; color:#b45309; border:1px solid #fde68a;">● Scaffolding Needed</span>
+                    <span class="kpi-context-line" id="kpi-ps-context">3 students under threshold</span>
                   </div>
                 </div>
               </div>
               <div class="kpi-card">
-                <div class="kpi-icon-circle amber">🔍</div>
+                <div class="kpi-icon-circle blue" style="background:#eff6ff; color:#004ac6; border-color:#bfdbfe;">💬</div>
                 <div class="kpi-info">
-                  <div class="kpi-label">Review Band</div>
-                  <div class="kpi-value" id="kpi-rev">--</div>
+                  <div class="kpi-label">Check-in Recommended</div>
+                  <div class="kpi-value" id="kpi-rev" style="color:#004ac6;">--</div>
                   <div class="kpi-delta-row">
-                    <span class="kpi-delta-chip delta-amber">● Active Queue</span>
-                    <span class="kpi-context-line">Bi-weekly advisor triage</span>
+                    <span class="kpi-delta-chip" style="background:#eff6ff; color:#004ac6; border:1px solid #bfdbfe;">● Bi-weekly Triage</span>
+                    <span class="kpi-context-line">Conversational outreach queue</span>
                   </div>
                 </div>
               </div>
               <div class="kpi-card">
-                <div class="kpi-icon-circle blue">👀</div>
+                <div class="kpi-icon-circle" style="background:#f3e8ff; color:#712ae2; border:1px solid #ddd6fe;">💜</div>
                 <div class="kpi-info">
-                  <div class="kpi-label">Watchlist</div>
-                  <div class="kpi-value" id="kpi-wl">--</div>
+                  <div class="kpi-label">Human Review Only</div>
+                  <div class="kpi-value" id="kpi-wl" style="color:#712ae2;">--</div>
                   <div class="kpi-delta-row">
-                    <span class="kpi-delta-chip delta-blue">● Monitored</span>
-                    <span class="kpi-context-line">Early indicator variance</span>
+                    <span class="kpi-delta-chip" style="background:#f3e8ff; color:#712ae2; border:1px solid #ddd6fe;">● No Automated Action</span>
+                    <span class="kpi-context-line">Advisor discretion reserved</span>
                   </div>
                 </div>
               </div>
               <div class="kpi-card">
-                <div class="kpi-icon-circle green">✅</div>
+                <div class="kpi-icon-circle green" style="background:#ecfdf5; color:#059669; border-color:#a7f3d0;">🌿</div>
                 <div class="kpi-info">
-                  <div class="kpi-label">On Track</div>
-                  <div class="kpi-value" id="kpi-ot">--</div>
+                  <div class="kpi-label">Stable Progress</div>
+                  <div class="kpi-value" id="kpi-ot" style="color:#059669;">--</div>
                   <div class="kpi-delta-row">
-                    <span class="kpi-delta-chip delta-emerald">● Stable Pace</span>
-                    <span class="kpi-context-line">Above academic &amp; placement baselines</span>
+                    <span class="kpi-delta-chip" style="background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;">● Self-Sustaining</span>
+                    <span class="kpi-context-line">Consistent placement trajectory</span>
                   </div>
                 </div>
               </div>
             </div>
+
 
             <div style="display:grid; grid-template-columns: 2.2fr 1fr; gap:20px; align-items:start;">
               <div>
@@ -2237,33 +2396,48 @@
                 </div>
               </div>
 
-              <div>
+              <div style="display:flex; flex-direction:column; gap:16px;">
                 <!-- Campus Pulse: Department Health Heatmap Widget -->
                 <div class="dept-health-card card">
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
                     <div>
-                      <h4 style="font-size:0.88rem; font-weight:700; color:#0f172a; margin:0;">Campus Pulse — Department Health</h4>
-                      <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Mean success score by academic department</div>
+                      <h4 style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin:0;">Department Telemetry</h4>
+                      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Cohort success averages</div>
                     </div>
-                    <span class="brand-tag" style="font-size:0.62rem;">Live Pulse</span>
+                    <span class="brand-tag" style="font-size:0.65rem; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0; border-radius:12px; padding:2px 8px; font-weight:700;">Live Sensor</span>
                   </div>
-                  <div id="dept-health-heatmap-container" style="display:flex; flex-direction:column; gap:6px;">
-                    <div style="font-size:0.75rem; color:var(--text-muted); padding:8px 0;">Loading department telemetry...</div>
+                  <div id="dept-health-heatmap-container" style="display:flex; flex-direction:column; gap:8px;">
+                    <div style="font-size:0.78rem; color:var(--text-muted); padding:8px 0;">Loading department telemetry...</div>
                   </div>
-                  <div style="margin-top:10px; font-size:0.68rem; color:#64748b; border-top:1px solid var(--border-color); padding-top:6px; display:flex; justify-content:space-between;">
-                    <span>Active Cohort: CSE (N=130)</span>
-                    <span style="color:var(--text-muted);">Real-time</span>
+                  <div style="margin-top:14px; font-size:0.72rem; color:var(--text-muted); border-top:1px solid var(--border-color); padding-top:8px; display:flex; justify-content:space-between;">
+                    <span>Active Cohort: <strong>CSE (N=130)</strong></span>
+                    <span style="color:#059669; font-weight:600;">✓ Synced</span>
                   </div>
                 </div>
 
-                <div class="card" style="padding:16px;">
-                  <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-bottom:8px;">SCHEDULED CHECK-IN</div>
-                  <div style="font-size:0.8rem; color:#334155; padding:8px; background:#f8fafc; border-radius:6px; border-left:3px solid var(--primary-blue);">
-                    <strong>Aarav Sharma</strong> (10:30 AM)<br>
-                    <span style="font-size:0.72rem; color:var(--text-muted);">Coding Practice Clinic Discussion</span>
+                <!-- Stitch 1:1 Check-in Touchpoint Card -->
+                <div class="card" style="border-left:4px solid var(--primary-accent);">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span style="font-size:0.74rem; font-weight:700; color:var(--primary-blue); text-transform:uppercase; letter-spacing:0.04em;">Next Scheduled 1:1</span>
+                    <span style="font-size:0.7rem; color:var(--text-muted); background:var(--bg-subtle); padding:2px 6px; border-radius:4px;">10:30 AM Today</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                    <div style="width:38px; height:38px; border-radius:10px; background:#eff6ff; color:#004ac6; font-weight:800; font-size:0.9rem; display:flex; align-items:center; justify-content:center; border:1px solid #bfdbfe;">AS</div>
+                    <div>
+                      <div style="font-weight:700; font-size:0.9rem; color:var(--text-main);">Aarav Sharma</div>
+                      <div style="font-size:0.74rem; color:var(--text-muted);">CS 301 Catch-up Agreement &bull; CSE 2029</div>
+                    </div>
+                  </div>
+                  <div style="padding:10px 12px; background:var(--bg-subtle); border-radius:8px; font-size:0.78rem; color:#334155; margin-bottom:12px; line-height:1.4;">
+                    <strong>Advising Agenda:</strong> Review sliding window problem set and confirm attendance reinstatement.
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <button class="btn btn-primary btn-sm" style="flex:1; justify-content:center;" onclick="openInterventionModal('stu_1107c6563069')">Open Case Notes</button>
+                    <button class="btn btn-outline btn-sm" onclick="showToast('Rescheduled check-in calendar invite')">Reschedule</button>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -4663,29 +4837,27 @@ Available Nimbus Shell commands:
       if (btn) btn.innerText = 'Authenticating with Firebase...';
 
       try {
-        if (fbAuthInstance && fbAuthInstance.signInWithEmailAndPassword) {
-          try {
-            await fbAuthInstance.signInWithEmailAndPassword(email, pwd);
-          } catch (fbErr) {
-            console.log('Firebase cloud fallback to deterministic auth session');
-          }
+        if (!fbAuthInstance || !fbAuthInstance.signInWithEmailAndPassword) {
+          throw new Error('Firebase Auth is not initialized. Check your credentials or internet.');
         }
 
+        const fbUserCredential = await fbAuthInstance.signInWithEmailAndPassword(email, pwd);
+        const fbUser = fbUserCredential.user;
+
+        const isStudent = email.includes('student') || email.includes('aarav') || !!email.match(/[0-9]{4}/);
+        const isAdmin = email.includes('rajesh') || email.includes('admin') || email.includes('dean');
+
         const userObj = {
-          uid: 'fb_' + Math.random().toString(36).substring(2, 10),
-          email: email,
-          displayName: email.includes('ananya') ? 'Dr. Ananya Sharma' :
-                       email.includes('rajesh') ? 'Prof. Rajesh Gupta' :
-                       email.includes('aarav') ? 'Aarav Sharma' :
-                       email.includes('parul') ? 'Parul Lead Trainer' : 'Faculty Member',
-          role: email.includes('rajesh') || email.includes('admin') ? 'admin' :
-                email.includes('aarav') || email.includes('student') ? 'student' : 'advisor',
-          roleTitle: email.includes('rajesh') || email.includes('admin') ? 'Dean & Placement Director' :
-                     email.includes('aarav') || email.includes('student') ? 'Student (2026-CSE-042)' : 'Lead Faculty Advisor (CSE)',
-          avatarInitials: email.includes('ananya') ? 'AS' :
-                          email.includes('rajesh') ? 'RG' :
-                          email.includes('aarav') ? 'AS' :
-                          email.includes('parul') ? 'PT' : 'CP',
+          uid: fbUser ? fbUser.uid : ('fb_' + Math.random().toString(36).substring(2, 10)),
+          email: fbUser && fbUser.email ? fbUser.email : email,
+          displayName: fbUser && fbUser.displayName ? fbUser.displayName : (
+            isAdmin ? 'Prof. Rajesh Gupta' :
+            isStudent ? 'Aarav Sharma' :
+            (email.includes('ananya') ? 'Dr. Ananya Sharma' : 'Faculty Member')
+          ),
+          role: isAdmin ? 'admin' : (isStudent ? 'student' : 'advisor'),
+          roleTitle: isAdmin ? 'Dean & Placement Director' : (isStudent ? 'Student (Enrolled)' : 'Lead Faculty Advisor (CSE)'),
+          avatarInitials: (fbUser && fbUser.displayName ? fbUser.displayName : email).substring(0, 2).toUpperCase(),
           provider: 'password',
           loginTime: new Date().toISOString()
         };
@@ -4695,48 +4867,57 @@ Available Nimbus Shell commands:
         hideAuthOverlay();
         showToast(`✨ Welcome, ${userObj.displayName}! Signed in via Firebase.`);
       } catch (err) {
-        alert('Authentication failed: ' + err.message);
+        console.error('Firebase Email SignIn Error:', err);
+        let msg = err.message || 'Firebase sign in failed.';
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+          msg = 'Invalid credentials or user not registered in Firebase. Switch to Sign Up tab to create your account.';
+        } else if (err.code === 'auth/wrong-password') {
+          msg = 'Incorrect password.';
+        }
+        alert(msg);
+        showToast(`⚠️ ${msg}`);
       } finally {
         if (btn) btn.innerHTML = 'Sign In to Faculty Portal <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
       }
     }
+
 
     async function handleFirebaseGoogleSignIn(rolePreference) {
       const btnFaculty = document.getElementById('btn-google-signin-faculty');
       const btnStudent = document.getElementById('btn-google-signin-student');
       const activeBtn = rolePreference === 'student' ? btnStudent : btnFaculty;
       const originalHtml = activeBtn ? activeBtn.innerHTML : '';
-      if (activeBtn) activeBtn.innerHTML = 'Connecting to Google...';
+      if (activeBtn) activeBtn.innerHTML = 'Opening Google Sign-In...';
 
       try {
-        let googleUser = null;
-        if (typeof firebase !== 'undefined' && firebase.auth) {
-          try {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            provider.addScope('profile');
-            provider.addScope('email');
-            const result = await firebase.auth().signInWithPopup(provider);
-            if (result && result.user) {
-              googleUser = result.user;
-            }
-          } catch (popupErr) {
-            console.warn('Firebase Google popup notification:', popupErr.code, popupErr.message);
-          }
+        if (typeof firebase === 'undefined' || !firebase.auth) {
+          throw new Error('Firebase SDK is not loaded. Please verify internet connection.');
         }
 
-        const role = rolePreference || 'teacher';
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
+        provider.setCustomParameters({ prompt: 'select_account' });
+
+        const result = await firebase.auth().signInWithPopup(provider);
+        if (!result || !result.user) {
+          throw new Error('Google Sign-In was cancelled or failed to return credentials.');
+        }
+
+        const googleUser = result.user;
+        const role = rolePreference || (googleUser.email && (googleUser.email.includes('student') || googleUser.email.match(/[0-9]{4}/)) ? 'student' : 'teacher');
         const isStudent = (role === 'student');
 
         const userObj = {
-          uid: googleUser ? googleUser.uid : ('google_' + Math.random().toString(36).substring(2, 10)),
-          email: googleUser && googleUser.email ? googleUser.email : (isStudent ? '2023cse001@campuspulse.edu' : 'ananya.sharma@campuspulse.edu'),
-          displayName: googleUser && googleUser.displayName ? googleUser.displayName : (isStudent ? 'Aarav Sharma' : 'Dr. Ananya Sharma'),
+          uid: googleUser.uid,
+          email: googleUser.email || (isStudent ? 'student@campuspulse.edu' : 'faculty@campuspulse.edu'),
+          displayName: googleUser.displayName || (isStudent ? 'Enrolled Student' : 'Faculty Member'),
           role: isStudent ? 'student' : 'teacher',
-          roleTitle: isStudent ? 'Student (2023CSE001 • CSE 2029)' : 'Lead Faculty Advisor (CSE Sec A & B)',
-          avatarInitials: googleUser && googleUser.displayName
+          roleTitle: isStudent ? 'Student (Google Authenticated)' : 'Faculty Mentor (Google Authenticated)',
+          avatarInitials: googleUser.displayName
             ? googleUser.displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
-            : 'AS',
-          photoURL: googleUser ? googleUser.photoURL : null,
+            : 'GU',
+          photoURL: googleUser.photoURL || null,
           provider: 'google.com',
           loginTime: new Date().toISOString()
         };
@@ -4744,10 +4925,19 @@ Available Nimbus Shell commands:
         localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
-        showToast(`✨ Welcome, ${userObj.displayName}! Signed in with Google.`);
+        showToast(`✨ Welcome, ${userObj.displayName}! Authenticated via Firebase Google.`);
       } catch (err) {
-        console.error('Google Sign-in failed:', err);
-        showToast(`Google Sign-In: ${err.message}`);
+        console.error('Firebase Google Sign-In error:', err);
+        let msg = err.message || 'Google Sign-In failed.';
+        if (err.code === 'auth/popup-closed-by-user') {
+          msg = 'Sign-in popup was closed before completing authentication.';
+        } else if (err.code === 'auth/unauthorized-domain') {
+          msg = 'Domain is not authorized in Firebase Console -> Authentication -> Settings -> Authorized Domains. Add "localhost".';
+        } else if (err.code === 'auth/popup-blocked') {
+          msg = 'Popup was blocked by your browser. Please allow popups for localhost.';
+        }
+        alert(msg);
+        showToast(`⚠️ ${msg}`);
       } finally {
         if (activeBtn) activeBtn.innerHTML = originalHtml;
       }
@@ -4773,44 +4963,35 @@ Available Nimbus Shell commands:
 
       const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'CP';
 
-      const userObj = {
-        uid: 'fb_user_' + Math.random().toString(36).substring(2, 10),
-        email,
-        displayName: name,
-        role: role === 'recruiter' ? 'advisor' : role,
-        roleTitle: roleTitles[role] || 'Institutional User',
-        avatarInitials: initials,
-        provider: 'password',
-        loginTime: new Date().toISOString()
-      };
-
-      localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
-      applyAuthenticatedUser(userObj);
-      hideAuthOverlay();
-      showToast(`🎉 Account created! Welcome to CampusPulse, ${name}.`);
-    }
-
-    async function handleFirebaseGoogleSignIn() {
       try {
+        if (typeof firebase !== 'undefined' && firebase.auth) {
+          try {
+            await firebase.auth().createUserWithEmailAndPassword(email, pwd);
+          } catch (createErr) {
+            console.warn('Firebase createUser warning:', createErr);
+          }
+        }
+
         const userObj = {
-          uid: 'fb_google_' + Math.random().toString(36).substring(2, 10),
-          email: 'priyvrat.dwivedi@krmu.edu.in',
-          displayName: 'Priyvrat Dwivedi',
-          role: 'advisor',
-          roleTitle: 'Faculty Advisor & Smart Campus Lead',
-          avatarInitials: 'PD',
-          provider: 'google.com',
+          uid: 'fb_user_' + Math.random().toString(36).substring(2, 10),
+          email,
+          displayName: name,
+          role: role === 'recruiter' ? 'advisor' : role,
+          roleTitle: roleTitles[role] || 'Institutional User',
+          avatarInitials: initials,
+          provider: 'password',
           loginTime: new Date().toISOString()
         };
 
         localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
-        showToast('✓ Signed in with Google Workspace credentials!');
+        showToast(`🎉 Account created! Welcome to CampusPulse, ${name}.`);
       } catch (err) {
-        alert('Google Sign-In failed');
+        alert('Registration failed: ' + err.message);
       }
     }
+
 
     function handleFirebaseResetPassword() {
       const email = document.getElementById('auth-signin-email').value.trim() || 'your email';
@@ -4950,11 +5131,11 @@ Available Nimbus Shell commands:
       if (studentListCache && studentListCache.length > 0) {
         const found = studentListCache.find(s => s.name && s.name.toLowerCase().includes('aarav'));
         if (found) return found.student_ref;
-        const specific = studentListCache.find(s => s.student_ref === 'stu_9f9974d49a1b');
+        const specific = studentListCache.find(s => s.student_ref === 'stu_1107c6563069');
         if (specific) return specific.student_ref;
         return studentListCache[0].student_ref;
       }
-      return 'stu_9f9974d49a1b';
+      return 'stu_1107c6563069';
     }
 
     function applyRoleRBAC(role, customUserObj) {
@@ -4994,13 +5175,20 @@ Available Nimbus Shell commands:
       const roleText = document.getElementById('active-role-badge-text');
 
       if (navAvatar) navAvatar.innerText = userObj.avatarInitials;
-      if (navName) navName.innerText = userObj.displayName;
+      if (navName) {
+        // Show clean friendly name on top bar
+        const firstName = userObj.displayName ? userObj.displayName.split(' ')[0] : 'User';
+        navName.innerText = (userObj.displayName && userObj.displayName.includes('Dr.')) 
+          ? ('Dr. ' + (userObj.displayName.split(' ')[1] || 'Sharma'))
+          : firstName;
+      }
       if (dropAvatar) dropAvatar.innerText = userObj.avatarInitials;
       if (dropName) dropName.innerText = userObj.displayName;
       if (dropEmail) dropEmail.innerText = userObj.email;
       if (dropRole) dropRole.innerText = userObj.roleTitle;
       if (dropAuth) dropAuth.innerText = `Firebase Authenticated (${userObj.provider || 'role_guard'})`;
       if (roleSelector) roleSelector.value = role;
+
 
       if (roleIndicator) {
         roleIndicator.className = `active-role-pill ${meta.badgeClass}`;
@@ -5650,6 +5838,16 @@ Available Nimbus Shell commands:
       const sel = document.getElementById('student-report-select');
       const badge = document.getElementById('student-self-badge');
       const repTitle = document.getElementById('student-report-title');
+
+      if (!studentListCache || studentListCache.length === 0) {
+        try {
+          const r = await fetch('/api/v1/advisors/me/action-list?limit=50');
+          const j = await r.json();
+          if (j.data && j.data.action_list) {
+            studentListCache = j.data.action_list;
+          }
+        } catch (e) {}
+      }
 
       if (isStudent) {
         if (repTitle) repTitle.innerText = "My Academic Success Dossier";

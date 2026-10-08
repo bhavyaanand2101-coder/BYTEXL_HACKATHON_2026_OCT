@@ -342,7 +342,7 @@ class CampusPulseRepository:
             inter.status = status
         if notes:
             inter.notes = notes
-        inter.updated_at = datetime.datetime.utcnow()
+        inter.updated_at = datetime.datetime.now(datetime.timezone.utc)
         self.db.commit()
         self.db.refresh(inter)
         return {

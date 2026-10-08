@@ -194,6 +194,13 @@ def run_seed(force: bool = False):
     pd.DataFrame(all_rows).to_csv(csv_dir / "sample_students.csv", index=False)
     print(f"[seed_demo] Sample CSV exported to data/sample_students.csv")
 
+    # Seed demo interventions for closed-loop triage demonstration
+    try:
+        from scripts.seed_demo_interventions import seed_demo_interventions
+        seed_demo_interventions()
+    except Exception as e:
+        print(f"[seed_demo] Warning: could not seed interventions: {e}")
+
 
 if __name__ == "__main__":
     run_seed()
