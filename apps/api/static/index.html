@@ -181,6 +181,19 @@
       color: var(--text-main) !important;
     }
 
+    /* Dark mode: profile badge always visible with proper contrast */
+    [data-theme="dark"] .user-profile-badge {
+      background: var(--bg-subtle) !important;
+      border-color: var(--border-color) !important;
+    }
+    [data-theme="dark"] .user-profile-badge:hover {
+      background: #3b4f68 !important;
+      border-color: var(--primary-blue) !important;
+    }
+    [data-theme="dark"] .user-name-label {
+      color: var(--text-main) !important;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: var(--font-sans);
@@ -399,7 +412,7 @@
       flex-shrink: 0;
     }
     .role-selector-pill {
-      background: #ffffff;
+      background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 20px;
       color: var(--text-main);
@@ -417,22 +430,31 @@
       border-color: var(--primary-blue);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
+    /* Dark mode: role selector dropdown options */
+    [data-theme="dark"] .role-selector-pill {
+      background: var(--bg-subtle) !important;
+      color: var(--text-main) !important;
+    }
+    [data-theme="dark"] .role-selector-pill option {
+      background: var(--bg-surface);
+      color: var(--text-main);
+    }
     .user-profile-badge {
       display: flex;
       align-items: center;
       gap: 9px;
       padding: 4px 10px 4px 4px;
       border: 1px solid var(--border-color);
-      background: #ffffff;
+      background: var(--bg-surface);
       border-radius: 24px;
       cursor: pointer;
       transition: all 0.15s ease;
       user-select: none;
     }
     .user-profile-badge:hover {
-      border-color: #cbd5e1;
+      border-color: var(--primary-blue);
       background: var(--bg-subtle);
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
     }
     .user-avatar {
       width: 32px;
@@ -1533,7 +1555,7 @@
       top: 50px;
       right: 0;
       width: 270px;
-      background: #ffffff;
+      background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
       box-shadow: 0 16px 36px -4px rgba(15, 23, 42, 0.16), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
@@ -1543,6 +1565,9 @@
       gap: 12px;
       z-index: 100;
       animation: dropdownFadeIn 0.15s ease-out;
+    }
+    [data-theme="dark"] .user-profile-dropdown {
+      box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.4), 0 4px 12px -2px rgba(0, 0, 0, 0.2);
     }
     @keyframes dropdownFadeIn {
       from { opacity: 0; transform: translateY(-6px); }
@@ -2227,7 +2252,7 @@
               <span style="font-size:0.65rem; color:var(--text-dim); margin-left:2px;">▾</span>
             </div>
             <div class="user-profile-dropdown" id="user-profile-dropdown">
-              <div style="display:flex; align-items:center; gap:12px; padding-bottom:10px; border-bottom:1px solid #f1f5f9;">
+              <div style="display:flex; align-items:center; gap:12px; padding-bottom:10px; border-bottom:1px solid var(--border-color);">
                 <div class="user-avatar" id="dropdown-user-avatar" style="width:40px; height:40px; font-size:0.95rem;">AS</div>
                 <div style="flex:1; overflow:hidden;">
                   <div style="font-size:0.88rem; font-weight:700; color:var(--text-main);" id="dropdown-user-name">Dr. Ananya Sharma</div>
@@ -7978,11 +8003,8 @@ Available Nimbus Shell commands:
 
     window.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem("theme");
-      if (savedTheme) {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.setAttribute("data-theme", "dark");
-      }
+      // Default is always light mode; only use saved preference if explicitly set
+      document.documentElement.setAttribute("data-theme", savedTheme || "light");
 
       initFirebaseAuth();
       const urlParams = new URLSearchParams(window.location.search);
