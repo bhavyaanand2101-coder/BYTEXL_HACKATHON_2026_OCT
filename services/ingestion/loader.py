@@ -22,12 +22,12 @@ from services.cleaning.cleaner import clean_student_assessment_record
 CANONICAL_COLUMN_MAP = {
     "roll_number": ["Roll Number", "Roll Num", "roll_number", "roll number", "Roll No", "Roll", "roll", "Enrollment No", "Enrollment", "Enrolment No", "Reg No", "Registration No", "URN", "Student ID", "StudentID", "ID", "RollNo", "Roll_No", "SRN", "Hall Ticket No", "student_ref"],
     "name": ["Name", "Student Name", "name", "student_name", "Full Name", "Candidate Name", "Student", "Learner Name", "Participant Name", "first_name"],
-    "branch": ["Branch", "Department", "branch", "dept", "Dept", "Stream", "Course", "Discipline", "Program"],
+    "branch": ["Branch", "Department", "branch", "dept", "Dept", "Stream", "Course", "Discipline", "Program", "school"],
     "batch": ["Batch", "batch", "Year", "Class", "Cohort", "Academic Year"],
     "section": ["Section", "section", "Sec", "sec", "Division", "Div", "Group"],
-    "total_score": ["Total Score", "Score Num", "Score", "total_score", "Total", "score", "Marks", "Marks Obtained", "Total Marks", "Assessment Score", "Test Score", "Quiz Score", "Exam Score", "Percentage", "Score %", "Grade", "CGPA", "success_score", "academic_index"],
+    "total_score": ["Total Score", "Score Num", "Score", "total_score", "Total", "score", "Marks", "Marks Obtained", "Total Marks", "Assessment Score", "Test Score", "Quiz Score", "Exam Score", "Percentage", "Score %", "Grade", "CGPA", "success_score", "academic_index", "G3", "G2", "G1", "final_grade"],
     "tab_switches": ["Tab switches", "Tab Switches", "tab_switches", "Tabs", "Tab Switch", "Tab Switch Count"],
-    "time_spent_raw": ["Time Spent", "Time Spent (raw)", "Time (min)", "time_spent", "Duration", "Time", "Time Taken", "Duration (min)"],
+    "time_spent_raw": ["Time Spent", "Time Spent (raw)", "Time (min)", "time_spent", "Duration", "Time", "Time Taken", "Duration (min)", "studytime"],
     "submission_date": ["Submission Date", "Timestamp", "submission_date", "Date", "Submitted At", "Submitted Date"],
     "ip_address": ["IP Address", "ip_address", "IP", "IPs", "Client IP"],
     "plag_1": ["Plagiarism %", "Plag 1%", "plag_1", "Plagiarism 1", "Plag 1"],
@@ -72,8 +72,8 @@ def map_row_to_canonical(raw_dict: Dict[str, Any]) -> Dict[str, Any]:
             v_str = str(v).strip()
             if not v_str or v_str.lower() in ("nan", "none", "null"):
                 continue
-            k_low = str(k).lower()
-            if any(term in k_low for term in ["roll", "reg", "enrol", "urn", "prn", "usn", "id", "seat", "admit"]):
+            k_low = str(k).lower().strip()
+            if any(term in k_low for term in ["roll", "reg", "enrol", "urn", "prn", "usn", "seat", "admit"]) or k_low in ("id", "studentid", "student_id") or k_low.endswith("_id") or k_low.endswith(" id"):
                 mapped["roll_number"] = v_str
                 break
 
@@ -154,11 +154,30 @@ def read_file_rows(file_path: Path) -> List[Dict[str, Any]]:
             return df.dropna(how="all").to_dict(orient="records")
     elif suffix in (".csv", ".txt"):
         for enc in ("utf-8-sig", "utf-8", "latin1", "cp1252"):
+            # 1. Try automatic delimiter sniffing (handles comma, semicolon, tab, pipe)
             try:
-                df = pd.read_csv(file_path, encoding=enc)
-                return df.dropna(how="all").to_dict(orient="records")
+                df = pd.read_csv(file_path, sep=None, engine="python", encoding=enc)
+                df = df.dropna(how="all")
+                if len(df.columns) > 1:
+                    return df.to_dict(orient="records")
             except Exception:
-                continue
+                pass
+            # 2. Try explicit semicolon (e.g., student-por.csv)
+            try:
+                df = pd.read_csv(file_path, sep=";", encoding=enc)
+                df = df.dropna(how="all")
+                if len(df.columns) > 1:
+                    return df.to_dict(orient="records")
+            except Exception:
+                pass
+            # 3. Try standard comma
+            try:
+                df = pd.read_csv(file_path, sep=",", encoding=enc)
+                df = df.dropna(how="all")
+                if len(df.columns) > 1:
+                    return df.to_dict(orient="records")
+            except Exception:
+                pass
         df = pd.read_csv(file_path, encoding="latin1")
         return df.dropna(how="all").to_dict(orient="records")
     else:
@@ -187,6 +206,16 @@ def process_ingestion_file(
 
     for idx, raw in enumerate(raw_rows):
         canonical_raw = map_row_to_canonical(raw)
+
+        # Synthesize identifiers for datasets without explicit roll or name (e.g., benchmark student-por.csv)
+        if not canonical_raw.get("roll_number") and not canonical_raw.get("name"):
+            canonical_raw["roll_number"] = f"STU-{idx + 1:04d}"
+            canonical_raw["name"] = f"Student {idx + 1:04d}"
+        elif not canonical_raw.get("roll_number") and canonical_raw.get("name"):
+            canonical_raw["roll_number"] = f"STU-{idx + 1:04d}"
+        elif canonical_raw.get("roll_number") and not canonical_raw.get("name"):
+            canonical_raw["name"] = f"Student ({canonical_raw['roll_number']})"
+
         row_sha = hashlib.sha256(json.dumps(canonical_raw, sort_keys=True, default=str).encode()).hexdigest()
 
         cleaned, logs, is_quarantined, q_reason = clean_student_assessment_record(

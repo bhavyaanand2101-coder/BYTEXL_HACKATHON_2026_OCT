@@ -297,9 +297,18 @@ def upload_raw_file(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    upload_dir = Path("./data/raw")
-    upload_dir.mkdir(parents=True, exist_ok=True)
-    temp_path = upload_dir / file.filename
+    safe_name = Path(file.filename or "dataset.csv").name
+    try:
+        if os.getenv("VERCEL") or not os.access(".", os.W_OK):
+            upload_dir = Path("/tmp/campuspulse_uploads")
+        else:
+            upload_dir = Path("./data/raw")
+        upload_dir.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        upload_dir = Path("/tmp/campuspulse_uploads")
+        upload_dir.mkdir(parents=True, exist_ok=True)
+
+    temp_path = upload_dir / safe_name
 
     with open(temp_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
