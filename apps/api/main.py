@@ -197,12 +197,19 @@ def get_dashboard():
 @app.get("/api/v1/auth/firebase-config")
 @app.get("/api/v1/auth/config")
 def get_auth_config():
-    """Return institutional authentication configuration with Firebase credentials removed."""
+    """Return institutional authentication and Firebase configuration."""
     return make_envelope({
-        "provider": "institutional_sso",
-        "firebase_enabled": False,
+        "apiKey": os.getenv("FIREBASE_API_KEY", "AIzaSyA7SpSw4TIIv52eZgUq31yMsbjk0eQRsKI"),
+        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", "hackxl.firebaseapp.com"),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID", "hackxl"),
+        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", "hackxl.firebasestorage.app"),
+        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID", "765716719209"),
+        "appId": os.getenv("FIREBASE_APP_ID", "1:765716719209:web:f7c3e3d1c19a1e530d24f8"),
+        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID", "G-K373KRXX7T"),
+        "provider": "firebase",
+        "firebase_enabled": True,
         "status": "active",
-        "auth_methods": ["email_password", "institutional_sso", "google_sso"]
+        "auth_methods": ["google_sso", "email_password", "institutional_sso"],
     })
 
 
@@ -294,9 +301,13 @@ def upload_raw_file(
     with open(temp_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    res = execute_pipeline(temp_path, db)
-    INGESTION_RUNS_CACHE.append(res)
-    return make_envelope(res)
+    try:
+        res = execute_pipeline(temp_path, db)
+        INGESTION_RUNS_CACHE.append(res)
+        return make_envelope(res)
+    except Exception as e:
+        logger.error(f"Ingestion failed for {file.filename}: {e}", exc_info=True)
+        raise HTTPException(status_code=400, detail=f"Failed to process sheet: {str(e)}")
 
 
 @app.post("/api/v1/ingest/preset/{preset_name}")
@@ -311,9 +322,13 @@ def ingest_preset_file(preset_name: str, db: Session = Depends(get_db)):
     if not target or not target.exists():
         raise HTTPException(status_code=404, detail=f"Preset file '{preset_name}' not found")
 
-    res = execute_pipeline(target, db)
-    INGESTION_RUNS_CACHE.append(res)
-    return make_envelope(res)
+    try:
+        res = execute_pipeline(target, db)
+        INGESTION_RUNS_CACHE.append(res)
+        return make_envelope(res)
+    except Exception as e:
+        logger.error(f"Preset ingestion failed for {preset_name}: {e}", exc_info=True)
+        raise HTTPException(status_code=400, detail=f"Failed to execute preset {preset_name}: {str(e)}")
 
 
 @app.get("/api/v1/ingest/runs")

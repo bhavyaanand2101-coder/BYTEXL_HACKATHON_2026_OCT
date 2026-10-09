@@ -274,6 +274,42 @@ def execute_pipeline(
 
     session.commit()
 
+    processed_summary = {
+        "total": processed_count,
+        "avg_score": round(sum(e["enrich"]["success_score"] for e in enriched_items) / max(1, processed_count), 2) if enriched_items else 0.0,
+        "tiers": {
+            "priority_support": sum(1 for e in enriched_items if e["enrich"]["tier"] == "priority_support"),
+            "review": sum(1 for e in enriched_items if e["enrich"]["tier"] == "review"),
+            "watchlist": sum(1 for e in enriched_items if e["enrich"]["tier"] == "watchlist"),
+            "on_track": sum(1 for e in enriched_items if e["enrich"]["tier"] == "on_track"),
+        },
+        "segments": {
+            seg: sum(1 for e in enriched_items if e["enrich"]["segment"] == seg)
+            for seg in set(e["enrich"]["segment"] for e in enriched_items)
+        } if enriched_items else {},
+    }
+
+    records_sample = [
+        {
+            "student_ref": e["cleaned"]["student_ref"],
+            "name": e["cleaned"].get("name") or "Student",
+            "roll_number": e["cleaned"].get("roll_number") or "--",
+            "department": e["cleaned"].get("department", "CSE"),
+            "batch": e["cleaned"].get("batch", "AIT 2029"),
+            "section": e["cleaned"].get("section", "C"),
+            "raw_score": e["cleaned"].get("total_score", 0),
+            "assessment_score": round(float(e["cleaned"].get("assessment_sub_score", 0)), 2),
+            "success_score": round(float(e["enrich"]["success_score"]), 2),
+            "academic_index": round(float(e["enrich"]["sub_indices"]["academic"]), 2),
+            "placement_index": round(float(e["enrich"]["sub_indices"]["placement"]), 2),
+            "attendance_index": round(float(e["enrich"]["sub_indices"]["attendance"]), 2),
+            "tier": e["enrich"]["tier"],
+            "segment": e["enrich"]["segment"],
+            "reason_codes": e["enrich"]["reason_codes"][:3],
+        }
+        for e in enriched_items
+    ]
+
     return {
         "run_id": hashlib.sha256(f"{file_path.name}_{datetime.datetime.utcnow()}".encode()).hexdigest()[:12],
         "file_name": file_path.name,
@@ -282,4 +318,6 @@ def execute_pipeline(
         "cleaning_report": cleaning_report,
         "config_hash": config_hash,
         "targets_hash": targets_hash,
+        "processed_summary": processed_summary,
+        "records_sample": records_sample,
     }

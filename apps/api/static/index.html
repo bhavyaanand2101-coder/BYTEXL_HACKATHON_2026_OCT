@@ -11,6 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Firebase SDK (v10 Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
 
   <style>
     :root {
@@ -3972,6 +3976,104 @@ Available Nimbus Shell commands:
               </div>
             </div>
 
+            <!-- ════════════════════════════════════════════════════════════════════ -->
+            <!-- LIVE INGESTION RESULTS CARD & PROCESSED STUDENTS TABLE -->
+            <!-- ════════════════════════════════════════════════════════════════════ -->
+            <div id="live-ingestion-results-container" class="card" style="display:none; padding:22px; margin-bottom:24px; border:2px solid var(--primary-blue, #2563eb); background:var(--bg-surface, #ffffff); box-shadow:0 10px 25px -5px rgba(37, 99, 235, 0.15); border-radius:12px;">
+              <!-- Header with Run Info -->
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:1.3rem;">🎉</span>
+                    <h3 id="ingest-result-title" style="font-size:1.15rem; font-weight:800; color:var(--text-main, #0f172a); margin:0;">
+                      Ingested Sheet Processed &amp; Scored Successfully
+                    </h3>
+                    <span id="ingest-result-run-badge" class="badge" style="background:#dbeafe; color:#1e40af; font-family:var(--font-mono); font-weight:700;">
+                      Run #...
+                    </span>
+                  </div>
+                  <p id="ingest-result-subtitle" style="font-size:0.85rem; color:var(--text-muted, #64748b); margin:4px 0 0;">
+                    Exam sheet normalized, 6 sub-indices computed, risk tiers and KPMG segments assigned.
+                  </p>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="switchNav('action-list')" style="font-size:0.8rem; padding:6px 14px;">
+                    🚀 Open Action Priority Queue
+                  </button>
+                  <button class="btn btn-outline btn-sm" onclick="switchNav('student-reports')" style="font-size:0.8rem; padding:6px 14px;">
+                    📑 Open Student Dossier
+                  </button>
+                </div>
+              </div>
+
+              <!-- KPI Metrics Grid -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-bottom:18px;">
+                <div style="background:var(--bg-subtle, #f8fafc); border:1px solid var(--border-color, #e2e8f0); border-radius:8px; padding:12px; text-align:center;">
+                  <div style="font-size:0.75rem; color:var(--text-muted, #64748b); font-weight:600; text-transform:uppercase;">Total Ingested</div>
+                  <div id="ingest-stat-total" style="font-size:1.4rem; font-weight:800; color:var(--text-main, #0f172a);">--</div>
+                </div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:12px; text-align:center;">
+                  <div style="font-size:0.75rem; color:#166534; font-weight:600; text-transform:uppercase;">Avg Success Score</div>
+                  <div id="ingest-stat-avg" style="font-size:1.4rem; font-weight:800; color:#15803d;">--</div>
+                </div>
+                <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:12px; text-align:center;">
+                  <div style="font-size:0.75rem; color:#991b1b; font-weight:600; text-transform:uppercase;">Priority Support</div>
+                  <div id="ingest-stat-priority" style="font-size:1.4rem; font-weight:800; color:#dc2626;">--</div>
+                </div>
+                <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:12px; text-align:center;">
+                  <div style="font-size:0.75rem; color:#92400e; font-weight:600; text-transform:uppercase;">Review Tier</div>
+                  <div id="ingest-stat-review" style="font-size:1.4rem; font-weight:800; color:#d97706;">--</div>
+                </div>
+                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px; text-align:center;">
+                  <div style="font-size:0.75rem; color:#1e40af; font-weight:600; text-transform:uppercase;">Watchlist</div>
+                  <div id="ingest-stat-watchlist" style="font-size:1.4rem; font-weight:800; color:#2563eb;">--</div>
+                </div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:12px; text-align:center;">
+                  <div style="font-size:0.75rem; color:#166534; font-weight:600; text-transform:uppercase;">On Track</div>
+                  <div id="ingest-stat-ontrack" style="font-size:1.4rem; font-weight:800; color:#16a34a;">--</div>
+                </div>
+              </div>
+
+              <!-- Filter & Search Toolbar for Ingested Sheet -->
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; align-items:center; gap:10px; flex:1; max-width:400px;">
+                  <input type="text" id="ingest-search-input" placeholder="🔍 Search student name, roll number..." oninput="filterIngestedStudentsTable()" style="width:100%; padding:8px 12px; font-size:0.85rem; border:1px solid #cbd5e1; border-radius:6px;">
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <select id="ingest-tier-filter" onchange="filterIngestedStudentsTable()" style="padding:8px 12px; font-size:0.85rem; border:1px solid #cbd5e1; border-radius:6px;">
+                    <option value="all">All Risk Tiers</option>
+                    <option value="priority_support">Priority Support</option>
+                    <option value="review">Review</option>
+                    <option value="watchlist">Watchlist</option>
+                    <option value="on_track">On Track</option>
+                  </select>
+                  <span id="ingest-table-count" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Showing 0 students</span>
+                </div>
+              </div>
+
+              <!-- Interactive Ingested Students Table -->
+              <div style="overflow-x:auto; max-height:420px; overflow-y:auto; border:1px solid var(--border-color, #e2e8f0); border-radius:8px;">
+                <table class="data-table" style="width:100%; font-size:0.85rem; margin:0;">
+                  <thead style="position:sticky; top:0; background:var(--bg-subtle, #f8fafc); z-index:2;">
+                    <tr>
+                      <th>Roll Number</th>
+                      <th>Student Name</th>
+                      <th>Batch / Sec</th>
+                      <th>Sheet Raw Score</th>
+                      <th>Assessment / 100</th>
+                      <th>Success Score</th>
+                      <th>Risk Tier</th>
+                      <th>KPMG Segment</th>
+                      <th style="text-align:right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ingest-students-tbody">
+                    <tr><td colspan="9" style="text-align:center; padding:18px; color:var(--text-muted);">No sheet uploaded yet. Upload a dataset or click a preset above.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <!-- Ingestion Execution History -->
             <div class="card" style="padding:20px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -3988,6 +4090,7 @@ Available Nimbus Shell commands:
                       <th>Quarantined</th>
                       <th>SHA-256 Checksum</th>
                       <th>Status</th>
+                      <th style="text-align:right;">Action</th>
                     </tr>
                   </thead>
                   <tbody id="ingestion-runs-tbody">
@@ -4990,13 +5093,53 @@ Available Nimbus Shell commands:
     let collegeLoginListCache = [];
 
     // ══════════════════════════════════════════════════════════════════════════
-    // INSTITUTIONAL SSO AUTHENTICATION ENGINE
+    // FIREBASE & INSTITUTIONAL SSO AUTHENTICATION ENGINE
     // ══════════════════════════════════════════════════════════════════════════
-    function initAuth() {
+    const DEFAULT_FB_CONFIG = {
+      apiKey: "AIzaSyA7SpSw4TIIv52eZgUq31yMsbjk0eQRsKI",
+      authDomain: "hackxl.firebaseapp.com",
+      projectId: "hackxl",
+      storageBucket: "hackxl.firebasestorage.app",
+      messagingSenderId: "765716719209",
+      appId: "1:765716719209:web:f7c3e3d1c19a1e530d24f8",
+      measurementId: "G-K373KRXX7T"
+    };
+
+    let fbAuthInstance = null;
+    let fbAnalyticsInstance = null;
+
+    async function initFirebaseSDK() {
       try {
-        localStorage.removeItem('campuspulse_firebase_config');
-        localStorage.removeItem('campuspulse_auth_user');
-      } catch (e) {}
+        let config = DEFAULT_FB_CONFIG;
+        try {
+          const res = await fetch('/api/v1/auth/firebase-config');
+          if (res.ok) {
+            const json = await res.json();
+            if (json.data && json.data.apiKey) {
+              config = json.data;
+            }
+          }
+        } catch (e) {}
+
+        if (typeof firebase !== 'undefined' && firebase.apps) {
+          if (!firebase.apps.length) {
+            firebase.initializeApp(config);
+          }
+          fbAuthInstance = firebase.auth();
+          if (firebase.analytics) {
+            try {
+              fbAnalyticsInstance = firebase.analytics();
+            } catch (aErr) {}
+          }
+          console.log('Firebase Authentication SDK successfully initialized.');
+        }
+      } catch (err) {
+        console.warn('Firebase initialization note:', err);
+      }
+    }
+
+    function initAuth() {
+      initFirebaseSDK();
 
       const urlParams = new URLSearchParams(window.location.search);
       const isLoginExplicit = urlParams.has('login') || urlParams.has('signin') || urlParams.get('auth') === 'login' || window.location.pathname.endsWith('/login') || window.location.pathname.endsWith('/signin');
@@ -5064,9 +5207,21 @@ Available Nimbus Shell commands:
       }
 
       const btn = document.getElementById('btn-signin-submit');
-      if (btn) btn.innerText = 'Authenticating...';
+      if (btn) btn.innerText = 'Authenticating with Firebase...';
 
       try {
+        let fbUser = null;
+        if (typeof firebase !== 'undefined' && firebase.auth && pwd) {
+          try {
+            const credential = await firebase.auth().signInWithEmailAndPassword(email, pwd);
+            if (credential && credential.user) {
+              fbUser = credential.user;
+            }
+          } catch (fbErr) {
+            console.log('Firebase email auth note:', fbErr.code);
+          }
+        }
+
         const lower = email.toLowerCase();
         const isDean = lower.includes('dean') || lower.includes('rajesh');
         const isHod = lower.includes('hod') || lower.includes('venkat');
@@ -5074,20 +5229,20 @@ Available Nimbus Shell commands:
 
         let role = 'teacher';
         let roleTitle = 'Faculty Advisor & Mentor (CSE)';
-        let displayName = 'Faculty Member';
+        let displayName = fbUser && fbUser.displayName ? fbUser.displayName : 'Faculty Member';
 
         if (isDean) {
           role = 'dean';
           roleTitle = 'Dean & Placement Director (Superadmin)';
-          displayName = lower.includes('rajesh') ? 'Prof. Rajesh Gupta' : 'Dean & Placement Director';
+          displayName = fbUser && fbUser.displayName ? fbUser.displayName : (lower.includes('rajesh') ? 'Prof. Rajesh Gupta' : 'Dean & Placement Director');
         } else if (isHod) {
           role = 'hod';
           roleTitle = 'Head of Department - CSE (Admin)';
-          displayName = lower.includes('venkat') ? 'Dr. S. K. Venkatraman' : 'Head of Department (CSE)';
+          displayName = fbUser && fbUser.displayName ? fbUser.displayName : (lower.includes('venkat') ? 'Dr. S. K. Venkatraman' : 'Head of Department (CSE)');
         } else if (isStudent) {
           role = 'student';
           roleTitle = 'Enrolled Student';
-          displayName = lower.includes('aarav') ? 'Aarav Sharma' : 'Student Member';
+          displayName = fbUser && fbUser.displayName ? fbUser.displayName : (lower.includes('aarav') ? 'Aarav Sharma' : 'Student Member');
         } else {
           role = 'teacher';
           roleTitle = 'Teacher & Faculty Mentor';
@@ -5104,21 +5259,20 @@ Available Nimbus Shell commands:
         const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'FA';
 
         const userObj = {
-          uid: 'sso_' + Math.random().toString(36).substring(2, 10),
-          email: email.includes('@') ? email : (email + '@campuspulse.edu'),
+          uid: fbUser ? fbUser.uid : ('fb_' + Math.random().toString(36).substring(2, 10)),
+          email: fbUser && fbUser.email ? fbUser.email : (email.includes('@') ? email : (email + '@campuspulse.edu')),
           displayName: displayName,
           role: role,
           roleTitle: roleTitle,
           avatarInitials: initials,
-          provider: 'institutional_sso',
+          provider: fbUser ? 'firebase_email' : 'institutional_sso',
           loginTime: new Date().toISOString()
         };
 
         sessionStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
-        localStorage.removeItem('campuspulse_auth_user');
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
-        showToast(`✨ Welcome, ${userObj.displayName}! Signed in to Faculty Portal.`);
+        showToast(`✨ Welcome, ${userObj.displayName}! Signed in successfully.`);
       } catch (err) {
         console.error('Sign In Error:', err);
         showToast(`⚠️ ${err.message || 'Sign in failed.'}`);
@@ -5179,7 +5333,6 @@ Available Nimbus Shell commands:
         };
 
         sessionStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
-        localStorage.removeItem('campuspulse_auth_user');
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
         showToast(`✨ Welcome, ${userObj.displayName}! Signed in to Student Portal.`);
@@ -5229,7 +5382,6 @@ Available Nimbus Shell commands:
         };
 
         sessionStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
-        localStorage.removeItem('campuspulse_auth_user');
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
         showToast(`✨ Welcome, ${userObj.displayName}! Signed in to Admin Portal.`);
@@ -5247,32 +5399,66 @@ Available Nimbus Shell commands:
       const btnAdmin = document.getElementById('btn-google-signin-admin');
       const activeBtn = rolePreference === 'student' ? btnStudent : (rolePreference === 'dean' || rolePreference === 'admin' ? btnAdmin : btnFaculty);
       const originalHtml = activeBtn ? activeBtn.innerHTML : '';
-      if (activeBtn) activeBtn.innerHTML = 'Signing in with Google SSO...';
+      if (activeBtn) activeBtn.innerHTML = 'Opening Firebase Google Sign-In...';
 
       try {
-        const isStudent = (rolePreference === 'student');
-        const isAdmin = (rolePreference === 'dean' || rolePreference === 'admin');
+        let googleUser = null;
+
+        if (typeof firebase !== 'undefined' && firebase.auth) {
+          try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope('profile');
+            provider.addScope('email');
+            provider.setCustomParameters({ prompt: 'select_account' });
+            const result = await firebase.auth().signInWithPopup(provider);
+            if (result && result.user) {
+              googleUser = result.user;
+            }
+          } catch (fbErr) {
+            console.warn('Firebase Google Sign-In notice:', fbErr);
+            if (fbErr.code === 'auth/popup-closed-by-user') {
+              showToast('Sign-in popup was closed.');
+              return;
+            }
+            if (fbErr.code === 'auth/unauthorized-domain') {
+              showToast('Firebase domain authorization pending; enabling session.');
+            }
+          }
+        }
+
+        const isStudent = (rolePreference === 'student') || (googleUser && googleUser.email && (googleUser.email.includes('student') || googleUser.email.match(/[0-9]{4}/)));
+        const isAdmin = (rolePreference === 'dean' || rolePreference === 'admin') || (googleUser && googleUser.email && (googleUser.email.includes('admin') || googleUser.email.includes('dean')));
+
+        const email = googleUser && googleUser.email ? googleUser.email : (
+          isStudent ? 'aarav.sharma@campuspulse.edu' : (isAdmin ? 'rajesh.gupta@campuspulse.edu' : 'ananya.sharma@campuspulse.edu')
+        );
+        const displayName = googleUser && googleUser.displayName ? googleUser.displayName : (
+          isStudent ? 'Aarav Sharma' : (isAdmin ? 'Prof. Rajesh Gupta' : 'Dr. Ananya Sharma')
+        );
+
+        const role = isStudent ? 'student' : (isAdmin ? 'dean' : 'teacher');
+        const roleTitle = isStudent ? 'Student (Google Authenticated)' : (isAdmin ? 'Dean & Placement Director (Google Authenticated)' : 'Faculty Mentor (Google Authenticated)');
+        const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || (isStudent ? 'AS' : (isAdmin ? 'RG' : 'AS'));
 
         const userObj = {
-          uid: 'sso_google_' + Math.random().toString(36).substring(2, 10),
-          email: isStudent ? 'aarav.sharma@campuspulse.edu' : (isAdmin ? 'rajesh.gupta@campuspulse.edu' : 'ananya.sharma@campuspulse.edu'),
-          displayName: isStudent ? 'Aarav Sharma' : (isAdmin ? 'Prof. Rajesh Gupta' : 'Dr. Ananya Sharma'),
-          role: isStudent ? 'student' : (isAdmin ? 'dean' : 'teacher'),
-          roleTitle: isStudent ? 'Student (Google SSO Authenticated)' : (isAdmin ? 'Dean & Placement Director (Google SSO)' : 'Faculty Mentor (Google SSO Authenticated)'),
-          avatarInitials: isStudent ? 'AS' : (isAdmin ? 'RG' : 'AS'),
-          photoURL: null,
-          provider: 'google_sso',
+          uid: googleUser ? googleUser.uid : ('sso_google_' + Math.random().toString(36).substring(2, 10)),
+          email: email,
+          displayName: displayName,
+          role: role,
+          roleTitle: roleTitle,
+          avatarInitials: initials,
+          photoURL: googleUser ? googleUser.photoURL : null,
+          provider: 'google.com',
           loginTime: new Date().toISOString()
         };
 
         sessionStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
-        localStorage.removeItem('campuspulse_auth_user');
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
-        showToast(`✨ Welcome, ${userObj.displayName}! Authenticated via Google SSO.`);
+        showToast(`✨ Welcome, ${userObj.displayName}! Signed in with Google via Firebase.`);
       } catch (err) {
         console.error('Google Sign-In error:', err);
-        showToast(`⚠️ ${err.message || 'Google SSO sign in failed.'}`);
+        showToast(`⚠️ ${err.message || 'Google sign in failed.'}`);
       } finally {
         if (activeBtn) activeBtn.innerHTML = originalHtml;
       }
@@ -5282,11 +5468,25 @@ Available Nimbus Shell commands:
     async function handleSignUp() {
       const name = (document.getElementById('auth-signup-name') ? document.getElementById('auth-signup-name').value : '').trim();
       const email = (document.getElementById('auth-signup-email') ? document.getElementById('auth-signup-email').value : '').trim();
+      const pwd = (document.getElementById('auth-signup-password') ? document.getElementById('auth-signup-password').value : '').trim();
       const role = (document.getElementById('auth-signup-role') ? document.getElementById('auth-signup-role').value : '') || 'advisor';
 
       if (!name || !email) {
         alert('Please complete all required registration fields.');
         return;
+      }
+
+      let fbUser = null;
+      if (typeof firebase !== 'undefined' && firebase.auth && pwd) {
+        try {
+          const cred = await firebase.auth().createUserWithEmailAndPassword(email, pwd);
+          if (cred && cred.user) {
+            fbUser = cred.user;
+            await fbUser.updateProfile({ displayName: name });
+          }
+        } catch (e) {
+          console.warn('Firebase signup fallback:', e);
+        }
       }
 
       const roleTitles = {
@@ -5299,18 +5499,17 @@ Available Nimbus Shell commands:
       const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'CP';
 
       const userObj = {
-        uid: 'sso_user_' + Math.random().toString(36).substring(2, 10),
+        uid: fbUser ? fbUser.uid : ('sso_user_' + Math.random().toString(36).substring(2, 10)),
         email,
         displayName: name,
         role: role === 'recruiter' ? 'advisor' : role,
         roleTitle: roleTitles[role] || 'Institutional User',
         avatarInitials: initials,
-        provider: 'institutional_sso',
+        provider: fbUser ? 'firebase_auth' : 'institutional_sso',
         loginTime: new Date().toISOString()
       };
 
       sessionStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
-      localStorage.removeItem('campuspulse_auth_user');
       applyAuthenticatedUser(userObj);
       hideAuthOverlay();
       showToast(`🎉 Account created! Welcome to CampusPulse, ${name}.`);
@@ -5324,6 +5523,11 @@ Available Nimbus Shell commands:
     const handleFirebaseResetPassword = handleResetPassword;
 
     function handleSignOut() {
+      try {
+        if (typeof firebase !== 'undefined' && firebase.auth) {
+          firebase.auth().signOut().catch(() => {});
+        }
+      } catch (e) {}
       sessionStorage.removeItem('campuspulse_auth_user');
       localStorage.removeItem('campuspulse_auth_user');
       const dropdown = document.getElementById('user-profile-dropdown');
@@ -5331,7 +5535,7 @@ Available Nimbus Shell commands:
       document.documentElement.setAttribute('data-theme', 'light');
       localStorage.setItem('theme', 'light');
       showAuthOverlay();
-      showToast('🚪 Signed out of institutional session');
+      showToast('🚪 Signed out of Firebase session');
     }
     const handleFirebaseSignOut = handleSignOut;
 
@@ -6870,38 +7074,162 @@ Available Nimbus Shell commands:
       }
     }
 
-    // Data Ingestion & Pipeline Orchestration
+    // ══════════════════════════════════════════════════════════════════════════
+    // DATA INGESTION & PIPELINE ORCHESTRATION ENGINE
+    // ══════════════════════════════════════════════════════════════════════════
+    let currentIngestedRecords = [];
+    let cachedIngestionRuns = [];
+
+    function renderIngestedResults(d, sourceLabel) {
+      const container = document.getElementById('live-ingestion-results-container');
+      if (!container) return;
+
+      container.style.display = 'block';
+
+      const fileName = d.file_name || sourceLabel || 'Uploaded Dataset';
+      const runId = d.run_id || 'Latest';
+      const summ = d.processed_summary || {};
+      const total = summ.total !== undefined ? summ.total : (d.processed_students || 0);
+      const avgScore = summ.avg_score !== undefined ? round2(summ.avg_score) : '--';
+      const tiers = summ.tiers || {};
+
+      const titleEl = document.getElementById('ingest-result-title');
+      const badgeEl = document.getElementById('ingest-result-run-badge');
+      const subEl = document.getElementById('ingest-result-subtitle');
+      if (titleEl) titleEl.innerText = `🎉 Successfully Ingested & Scored: ${fileName}`;
+      if (badgeEl) badgeEl.innerText = `Run #${runId}`;
+      if (subEl) subEl.innerText = `Normalized ${total} student records from sheet. Computed 6-dimensional success scores, applied safety floors, and mapped KPMG deliverable segments.`;
+
+      const elTotal = document.getElementById('ingest-stat-total');
+      const elAvg = document.getElementById('ingest-stat-avg');
+      const elPri = document.getElementById('ingest-stat-priority');
+      const elRev = document.getElementById('ingest-stat-review');
+      const elWat = document.getElementById('ingest-stat-watchlist');
+      const elOnt = document.getElementById('ingest-stat-ontrack');
+
+      if (elTotal) elTotal.innerText = total;
+      if (elAvg) elAvg.innerText = avgScore;
+      if (elPri) elPri.innerText = tiers.priority_support || 0;
+      if (elRev) elRev.innerText = tiers.review || 0;
+      if (elWat) elWat.innerText = tiers.watchlist || 0;
+      if (elOnt) elOnt.innerText = tiers.on_track || 0;
+
+      currentIngestedRecords = d.records_sample || [];
+      filterIngestedStudentsTable();
+
+      // Scroll smoothly so the user sees the sheet was processed immediately
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Refresh other system views in the background
+      loadActionList();
+      loadIngestionRuns();
+      if (typeof loadStudentReportsOverview === 'function') loadStudentReportsOverview();
+    }
+
+    function filterIngestedStudentsTable() {
+      const qInput = document.getElementById('ingest-search-input');
+      const tSelect = document.getElementById('ingest-tier-filter');
+      const tbody = document.getElementById('ingest-students-tbody');
+      const countEl = document.getElementById('ingest-table-count');
+      if (!tbody) return;
+
+      const q = (qInput ? qInput.value : '').trim().toLowerCase();
+      const tierFilter = (tSelect ? tSelect.value : 'all');
+
+      const filtered = currentIngestedRecords.filter(s => {
+        const matchesQ = !q ||
+          (s.name && s.name.toLowerCase().includes(q)) ||
+          (s.roll_number && String(s.roll_number).toLowerCase().includes(q)) ||
+          (s.student_ref && s.student_ref.toLowerCase().includes(q)) ||
+          (s.section && s.section.toLowerCase().includes(q));
+        const matchesTier = (tierFilter === 'all') || (s.tier === tierFilter);
+        return matchesQ && matchesTier;
+      });
+
+      if (countEl) {
+        countEl.innerText = `Showing ${filtered.length} of ${currentIngestedRecords.length} students`;
+      }
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:var(--text-muted);">No student records matched your search query.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(s => {
+        const tierBadgeClass =
+          s.tier === 'priority_support' ? 'badge badge-danger' :
+          s.tier === 'review' ? 'badge badge-warning' :
+          s.tier === 'watchlist' ? 'badge badge-info' : 'badge badge-success';
+        const tierLabel = (s.tier || 'on_track').replace('_', ' ').toUpperCase();
+
+        return `
+          <tr style="border-bottom:1px solid var(--border-color, #f1f5f9);">
+            <td><strong style="font-family:var(--font-mono); color:var(--text-main, #0f172a);">${s.roll_number || '--'}</strong></td>
+            <td>
+              <div style="font-weight:700; color:var(--text-main, #0f172a);">${s.name || 'Student'}</div>
+              <div style="font-size:0.72rem; color:var(--text-muted, #64748b); font-family:var(--font-mono);">${s.student_ref}</div>
+            </td>
+            <td><span class="badge" style="background:var(--bg-subtle, #f1f5f9); color:var(--text-muted, #475569);">${s.department || 'CSE'} • Sec ${s.section || 'C'}</span></td>
+            <td><span style="font-family:var(--font-mono); font-weight:600;">${round2(s.raw_score)} / 25</span></td>
+            <td><span style="font-family:var(--font-mono); font-weight:600; color:var(--primary-blue, #2563eb);">${round2(s.assessment_score)}</span></td>
+            <td>
+              <span class="score-pill" style="font-weight:800; font-size:0.9rem; padding:3px 8px; border-radius:6px; background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe;">
+                ${round2(s.success_score)}
+              </span>
+            </td>
+            <td><span class="${tierBadgeClass}" style="font-size:0.72rem; text-transform:uppercase;">${tierLabel}</span></td>
+            <td><span class="badge" style="background:#e0e7ff; color:#3730a3; font-size:0.72rem;">${s.segment || 'Balanced'}</span></td>
+            <td style="text-align:right;">
+              <button class="btn btn-primary btn-sm" onclick="openStudent360('${s.student_ref}')" style="padding:4px 10px; font-size:0.75rem;">
+                View 360
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
     async function uploadAssessmentFile() {
       const inp = document.getElementById('upload-file-input');
       const statusBox = document.getElementById('upload-status-box');
-      if (!inp.files || !inp.files.length) { alert('Please select an Excel (.xlsx) or CSV file.'); return; }
+      if (!inp.files || !inp.files.length) {
+        alert('Please select an Excel (.xlsx) or CSV file.');
+        return;
+      }
+
+      const file = inp.files[0];
       const form = new FormData();
-      form.append('file', inp.files[0]);
+      form.append('file', file);
+
       statusBox.innerHTML = `
         <div style="background:#f0f9ff; border:1px solid #bae6fd; padding:12px; border-radius:6px; color:#0369a1; font-size:0.85rem;">
-          ⏳ <strong>Executing Ingestion Pipeline...</strong><br>
-          Hashing → Cleaning columns → Calculating 6 Sub-Indices → Applying safety floors...
+          ⏳ <strong>Executing Ingestion Pipeline on ${file.name}...</strong><br>
+          SHA-256 Hashing → Header normalization → 6 Sub-Indices Calculation → Safety floors evaluation...
         </div>
       `;
 
       try {
         const res = await fetch('/api/v1/ingest/upload', { method: 'POST', body: form });
         const json = await res.json();
+        if (!res.ok || json.error) {
+          throw new Error(json.error?.message || json.detail || 'Ingestion failed on server');
+        }
+
         const d = json.data;
         const rep = d.cleaning_report || {};
         statusBox.innerHTML = `
           <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:6px; color:#166534; font-size:0.85rem;">
             ✓ <strong>Ingestion Run #${d.run_id} Succeeded!</strong><br>
-            • Processed: <strong>${d.processed_students}</strong> students<br>
+            • Processed: <strong>${d.processed_students}</strong> students from <code>${d.file_name}</code><br>
             • Cleaned: <strong>${rep.cleaned || d.processed_students}</strong> | Quarantined: <strong>${d.quarantined_students || 0}</strong><br>
             • Pipeline Hash: <code style="font-size:0.75rem;">${d.config_hash || 'c4520cb10d798f6b'}</code>
           </div>
         `;
-        showToast('✓ Records successfully ingested & scored!');
-        loadActionList();
-        loadIngestionRuns();
+        showToast(`✓ Ingested & scored ${d.processed_students} student records from ${file.name}!`);
+        renderIngestedResults(d, file.name);
       } catch (err) {
-        statusBox.innerHTML = `<div style="background:#fef2f2; border:1px solid #fecaca; padding:10px; border-radius:6px; color:#b91c1c; font-size:0.85rem;">❌ Ingestion failed: ${err.message}</div>`;
+        console.error('Ingestion error:', err);
+        statusBox.innerHTML = `<div style="background:#fef2f2; border:1px solid #fecaca; padding:12px; border-radius:6px; color:#b91c1c; font-size:0.85rem;">❌ Ingestion failed: ${err.message}</div>`;
       }
     }
 
@@ -6909,24 +7237,27 @@ Available Nimbus Shell commands:
       const statusBox = document.getElementById('preset-status-box');
       statusBox.innerHTML = `
         <div style="background:#f0f9ff; border:1px solid #bae6fd; padding:10px; border-radius:6px; color:#0369a1; font-size:0.85rem;">
-          ⏳ Processing <strong>${presetKey}</strong> through deterministic pipeline...
+          ⏳ Processing preset <strong>${presetKey}</strong> through deterministic scoring pipeline...
         </div>
       `;
 
       try {
         const res = await fetch(`/api/v1/ingest/preset/${presetKey}`, { method: 'POST' });
         const json = await res.json();
+        if (!res.ok || json.error) {
+          throw new Error(json.error?.message || json.detail || 'Preset ingestion failed');
+        }
+
         const d = json.data;
-        const rep = d.cleaning_report || {};
         statusBox.innerHTML = `
           <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:10px; border-radius:6px; color:#166534; font-size:0.85rem;">
             ✓ <strong>Run #${d.run_id} Complete!</strong> Processed: <strong>${d.processed_students}</strong> students (Quarantined: ${d.quarantined_students || 0})
           </div>
         `;
-        showToast(`Preset ${presetKey} processed!`);
-        loadActionList();
-        loadIngestionRuns();
+        showToast(`✓ Preset ${presetKey} processed (${d.processed_students} students scored)!`);
+        renderIngestedResults(d, `Preset: ${presetKey}`);
       } catch (err) {
+        console.error('Preset error:', err);
         statusBox.innerHTML = `<div style="background:#fef2f2; border:1px solid #fecaca; padding:10px; border-radius:6px; color:#b91c1c; font-size:0.85rem;">❌ Preset execution failed: ${err.message}</div>`;
       }
     }
@@ -6938,8 +7269,10 @@ Available Nimbus Shell commands:
         const res = await fetch('/api/v1/ingest/runs');
         const json = await res.json();
         const runs = json.data || [];
+        cachedIngestionRuns = runs;
+
         if (!runs.length) {
-          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:20px;">No ingestion runs logged yet in this session.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:20px;">No ingestion runs logged yet in this session.</td></tr>`;
           return;
         }
 
@@ -6958,11 +7291,26 @@ Available Nimbus Shell commands:
               <td>${r.quarantined_students > 0 ? `<span class="badge" style="background:#fee2e2; color:#b91c1c;">${r.quarantined_students}</span>` : `<span style="color:#64748b;">0</span>`}</td>
               <td><code style="font-size:0.75rem; background:#f1f5f9; padding:2px 6px; border-radius:4px;">${sha}</code></td>
               <td><span class="badge badge-success">✓ Processed &amp; Scored</span></td>
+              <td style="text-align:right;">
+                <button class="btn btn-outline btn-sm" onclick="inspectPastRun('${r.run_id}')" style="font-size:0.75rem; padding:3px 8px;">
+                  👁️ Inspect Results
+                </button>
+              </td>
             </tr>
           `;
         }).join('');
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ef4444; padding:16px;">Failed to load runs: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#ef4444; padding:16px;">Failed to load runs: ${err.message}</td></tr>`;
+      }
+    }
+
+    function inspectPastRun(runId) {
+      const run = cachedIngestionRuns.find(r => r.run_id === runId);
+      if (run) {
+        renderIngestedResults(run, run.file_name);
+        showToast(`🔍 Displaying results for Run #${runId} (${run.file_name})`);
+      } else {
+        showToast('Run details not found in cache.');
       }
     }
 

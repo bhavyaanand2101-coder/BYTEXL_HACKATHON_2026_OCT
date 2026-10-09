@@ -90,3 +90,50 @@ def test_login_and_signin_endpoints():
     assert "CampusPulse" in res_signin.text
 
 
+def test_firebase_config_endpoint():
+    res = client.get("/api/v1/auth/firebase-config")
+    assert res.status_code == 200
+    json_data = res.json()
+    assert "data" in json_data
+    d = json_data["data"]
+    assert d["firebase_enabled"] is True
+    assert "apiKey" in d and len(d["apiKey"]) > 10
+    assert "projectId" in d and d["projectId"] == "hackxl"
+    assert "authDomain" in d and "firebase" in d["authDomain"]
+
+
+def test_preset_ingestion_returns_summary_and_records_sample():
+    res = client.post("/api/v1/ingest/preset/section_c")
+    assert res.status_code == 200
+    json_data = res.json()
+    assert "data" in json_data
+    d = json_data["data"]
+    assert d["processed_students"] > 0
+    assert "processed_summary" in d
+    assert "records_sample" in d
+    assert len(d["records_sample"]) > 0
+    sample = d["records_sample"][0]
+    assert "student_ref" in sample
+    assert "success_score" in sample
+    assert "tier" in sample
+    assert "segment" in sample
+
+
+def test_custom_sheet_upload_ingestion():
+    csv_content = b"Roll No,Student Name,Marks,Branch,Section\n251309901,Test Student One,21.5,CSE,C\n251309902,Test Student Two,14.0,CSE,C\n"
+    files = {"file": ("test_upload_roster.csv", csv_content, "text/csv")}
+    try:
+        res = client.post("/api/v1/ingest/upload", files=files)
+        assert res.status_code == 200
+        json_data = res.json()
+        assert "data" in json_data
+        d = json_data["data"]
+        assert d["processed_students"] == 2
+        assert "records_sample" in d
+        assert len(d["records_sample"]) == 2
+        assert d["records_sample"][0]["roll_number"] in ["251309901", "251309902"]
+    finally:
+        from pathlib import Path
+        Path("data/raw/test_upload_roster.csv").unlink(missing_ok=True)
+
+
