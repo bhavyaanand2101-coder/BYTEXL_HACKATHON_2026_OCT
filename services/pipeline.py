@@ -116,24 +116,24 @@ def execute_pipeline(
         # Synthetic multi-indicator baseline if only single assessment is ingested
         # (Allows realistic Student Success Score demo across all 6 dimensions)
         cgpa_baseline = round(min(10.0, max(4.0, (item["total_score"] / 25.0) * 6.0 + 3.8)), 2)
-        attendance_baseline = round(min(100.0, max(45.0, (item["total_score"] / 25.0) * 40.0 + 55.0)), 1)
+        attendance_baseline = round(min(100.0, max(45.0, (item["total_score"] / 25.0) * 40.0 + 55.0)), 2)
         
         student_raw = {
             "cgpa": cgpa_baseline,
             "backlogs": 1 if cgpa_baseline < 5.0 else 0,
             "attendance_pct": attendance_baseline,
             "subjects_att_below_60": 1 if attendance_baseline < 60 else 0,
-            "aptitude": round(sub_score * 0.9 + 5.0, 1),
-            "coding": round(sub_score, 1),
-            "assessment_sub_score": round(sub_score, 1),
-            "mock": round(sub_score * 0.85 + 10.0, 1),
-            "assignment_completion_pct": round(attendance_baseline * 0.9, 1),
-            "scaled_logins": round(min(100.0, item["total_score"] * 3.5 + 20), 1),
+            "aptitude": round(sub_score * 0.9 + 5.0, 2),
+            "coding": round(sub_score, 2),
+            "assessment_sub_score": round(sub_score, 2),
+            "mock": round(sub_score * 0.85 + 10.0, 2),
+            "assignment_completion_pct": round(attendance_baseline * 0.9, 2),
+            "scaled_logins": round(min(100.0, item["total_score"] * 3.5 + 20), 2),
             "events": 2 if cgpa_baseline > 7.0 else 0,
             "clubs": 1,
             "hackathons": 1 if sub_score > 60 else 0,
             "certs": 1 if cgpa_baseline > 8.0 else 0,
-            "technical_score": round(sub_score, 1),
+            "technical_score": round(sub_score, 2),
             "soft_score": 70.0,
         }
 

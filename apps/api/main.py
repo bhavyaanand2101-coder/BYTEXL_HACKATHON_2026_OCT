@@ -181,6 +181,8 @@ def get_favicon():
 # ── UI Dashboard ─────────────────────────────────────────────────────────────
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("/login", response_class=HTMLResponse)
+@app.get("/signin", response_class=HTMLResponse)
 @app.get("/dashboard", response_class=HTMLResponse)
 def get_dashboard():
     static_file = Path(__file__).parent / "static" / "index.html"
@@ -190,20 +192,19 @@ def get_dashboard():
     return "<h1>CampusPulse API v5.0</h1><p>Dashboard UI static file not found.</p>"
 
 
-# ── Firebase Config ─────────────────────────────────────────────────────────
+# ── Authentication Config ───────────────────────────────────────────────────
 
 @app.get("/api/v1/auth/firebase-config")
-def get_firebase_config():
-    """Return public client Firebase configuration from environment or defaults."""
+@app.get("/api/v1/auth/config")
+def get_auth_config():
+    """Return institutional authentication configuration with Firebase credentials removed."""
     return make_envelope({
-        "apiKey": os.getenv("FIREBASE_API_KEY", "AIzaSyA7SpSw4TIIv52eZgUq31yMsbjk0eQRsKI"),
-        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", "hackxl.firebaseapp.com"),
-        "projectId": os.getenv("FIREBASE_PROJECT_ID", "hackxl"),
-        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", "hackxl.firebasestorage.app"),
-        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID", "765716719209"),
-        "appId": os.getenv("FIREBASE_APP_ID", "1:765716719209:web:f7c3e3d1c19a1e530d24f8"),
-        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID", "G-K373KRXX7T"),
+        "provider": "institutional_sso",
+        "firebase_enabled": False,
+        "status": "active",
+        "auth_methods": ["email_password", "institutional_sso", "google_sso"]
     })
+
 
 
 # ── Health & Metrics ──────────────────────────────────────────────────────────
@@ -397,14 +398,14 @@ def explain_student_score(student_ref: str, db: Session = Depends(get_db)):
 
     contributions = []
     for k, w in weights.items():
-        sub_val = sub.get(k, 0.0)
+        sub_val = round(float(sub.get(k, 0.0)), 2)
         contrib_pts = round(sub_val * w, 2)
         contributions.append({
             "indicator": k,
-            "weight": w,
+            "weight": round(float(w), 2),
             "sub_index_score": sub_val,
             "points_contributed": contrib_pts,
-            "formula": f"{sub_val:.1f} × {w:.2f} = {contrib_pts:.1f} pts",
+            "formula": f"{sub_val:.2f} × {w:.2f} = {contrib_pts:.2f} pts",
         })
 
     # Render natural language driver explanation
@@ -591,7 +592,7 @@ def get_cohort_readiness(db: Session = Depends(get_db)):
         "mean_success_score": round(total_score / n, 2),
         "tier_distribution": tier_dist,
         "segment_distribution": seg_dist,
-        "placement_ready_pct": round((tier_dist.get("on_track", 0) / n) * 100.0, 1),
+        "placement_ready_pct": round((tier_dist.get("on_track", 0) / n) * 100.0, 2),
     })
 
 
@@ -614,7 +615,7 @@ def get_cohort_gaps(db: Session = Depends(get_db)):
     if avg_placement < 50.0:
         gaps.append({
             "dimension": "Placement & Coding Readiness",
-            "current_mean": round(avg_placement, 1),
+            "current_mean": round(avg_placement, 2),
             "target_floor": 50.0,
             "severity": "HIGH",
             "impacted_cohort": "CSE 2029",
@@ -623,7 +624,7 @@ def get_cohort_gaps(db: Session = Depends(get_db)):
     if avg_lms < 50.0:
         gaps.append({
             "dimension": "LMS Engagement",
-            "current_mean": round(avg_lms, 1),
+            "current_mean": round(avg_lms, 2),
             "target_floor": 50.0,
             "severity": "MEDIUM",
             "impacted_cohort": "All Sections",
@@ -975,7 +976,7 @@ def get_assessment_analytics(db: Session = Depends(get_db)):
         "total_takers": len(results),
         "expected_time_min": 30.0,
         "speed_anomaly_count": speed_anoms,
-        "speed_anomaly_pct": round((speed_anoms / max(1, len(results))) * 100, 1),
+        "speed_anomaly_pct": round((speed_anoms / max(1, len(results))) * 100, 2),
         "plag_flag_count": plag_anoms,
         "tab_switch_anomaly_count": tab_anoms,
         "score_distribution": {

@@ -170,7 +170,7 @@ def predict_student_risk_probability(features: Dict[str, float]) -> Dict[str, An
     # Calibrated risk logit
     logit = 4.2 - (0.045 * acad + 0.035 * att + 0.040 * place + 0.020 * lms + 0.010 * eng + 0.015 * skills)
     risk_prob = 1.0 / (1.0 + math.exp(-logit))
-    risk_prob = round(max(0.01, min(0.99, risk_prob)), 3)
+    risk_prob = round(max(0.01, min(0.99, risk_prob)), 2)
 
     if risk_prob >= 0.65:
         risk_level = "HIGH"
@@ -192,7 +192,7 @@ def predict_student_risk_probability(features: Dict[str, float]) -> Dict[str, An
 
     return {
         "risk_probability": risk_prob,
-        "risk_percentage": f"{risk_prob * 100:.1f}%",
+        "risk_percentage": f"{risk_prob * 100:.2f}%",
         "risk_level": risk_level,
         "confidence": "High" if abs(risk_prob - 0.5) >= 0.2 else "Medium",
         "top_drivers": top_drivers or ["Minor Multi-Metric Variance"],

@@ -79,3 +79,14 @@ def test_admin_department_faculty_hierarchy():
     assert "No Access (Hidden)" in policies["Teacher (Faculty)"]["admin_portal"]
     assert "No Access (Hidden)" in policies["Student"]["admin_portal"]
 
+
+def test_login_and_signin_endpoints():
+    res_login = client.get("/login")
+    assert res_login.status_code == 200
+    assert "CampusPulse" in res_login.text
+
+    res_signin = client.get("/signin")
+    assert res_signin.status_code == 200
+    assert "CampusPulse" in res_signin.text
+
+

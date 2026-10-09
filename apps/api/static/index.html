@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,33 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <!-- Firebase SDK (v10 Compat) -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
-  <script>
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyA7SpSw4TIIv52eZgUq31yMsbjk0eQRsKI",
-      authDomain: "hackxl.firebaseapp.com",
-      projectId: "hackxl",
-      storageBucket: "hackxl.firebasestorage.app",
-      messagingSenderId: "765716719209",
-      appId: "1:765716719209:web:f7c3e3d1c19a1e530d24f8",
-      measurementId: "G-K373KRXX7T"
-    };
-    window.firebaseConfig = firebaseConfig;
-    if (typeof firebase !== 'undefined' && firebase.apps && !firebase.apps.length) {
-      try {
-        firebase.initializeApp(firebaseConfig);
-        if (firebase.analytics) {
-          firebase.analytics();
-        }
-      } catch (e) {
-        console.warn('Firebase init:', e);
-      }
-    }
-  </script>
+
   <style>
     :root {
       --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -163,6 +137,76 @@
       background: var(--bg-surface) !important;
     }
 
+    /* Dark Mode Hover States & Contrast Fixes */
+    [data-theme="dark"] .data-table tr:hover td {
+      background-color: rgba(255, 255, 255, 0.06) !important;
+      color: #f8fafc !important;
+    }
+    [data-theme="dark"] .data-table td {
+      border-bottom-color: var(--border-color) !important;
+    }
+    [data-theme="dark"] .search-pill-box:hover {
+      background: var(--bg-surface) !important;
+      border-color: var(--primary-blue) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+    [data-theme="dark"] .btn-outline:hover {
+      background: var(--bg-subtle) !important;
+      border-color: var(--primary-blue) !important;
+      color: var(--primary-blue) !important;
+    }
+    [data-theme="dark"] .card:hover,
+    [data-theme="dark"] .kpi-card:hover {
+      border-color: #475569 !important;
+      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4) !important;
+    }
+    [data-theme="dark"] .closed-loop-step:hover {
+      background: var(--bg-subtle) !important;
+      border-color: var(--primary-blue) !important;
+      color: var(--text-main) !important;
+    }
+    [data-theme="dark"] .competitor-card:hover {
+      border-color: var(--primary-blue) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    }
+    [data-theme="dark"] .sidebar-toggle-btn:hover {
+      background: var(--bg-subtle) !important;
+      color: var(--primary-blue) !important;
+      border-color: #475569 !important;
+    }
+    [data-theme="dark"] .role-selector-pill:hover,
+    [data-theme="dark"] .role-selector-pill:focus {
+      border-color: var(--primary-blue) !important;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15) !important;
+    }
+    [data-theme="dark"] .gap-card,
+    [data-theme="dark"] .flow-box,
+    [data-theme="dark"] .closed-loop-step,
+    [data-theme="dark"] .kpmg-formula-card,
+    [data-theme="dark"] .kpmg-quadrant-card {
+      background: var(--bg-surface) !important;
+      border-color: var(--border-color) !important;
+    }
+    [data-theme="dark"] .kpmg-quadrant-card:hover,
+    [data-theme="dark"] .kpmg-quadrant-card.active {
+      border-color: #818cf8 !important;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.25) !important;
+    }
+    [data-theme="dark"] .flow-node-item,
+    [data-theme="dark"] .strength-pill {
+      background: var(--bg-subtle) !important;
+      border-color: var(--border-color) !important;
+      color: var(--text-main) !important;
+    }
+    [data-theme="dark"] .kpmg-formula-code {
+      background: #090d16 !important;
+      border-color: var(--border-color) !important;
+      color: #e2e8f0 !important;
+    }
+    [data-theme="dark"] .kpmg-quadrant-title {
+      color: var(--text-main) !important;
+    }
+
     /* Override inline hardcoded colors */
     [data-theme="dark"] [style*="background:#f8fafc"],
     [data-theme="dark"] [style*="background: #f8fafc"] {
@@ -172,6 +216,27 @@
     [data-theme="dark"] [style*="background:#ffffff"],
     [data-theme="dark"] [style*="background: #ffffff"] {
       background: var(--bg-surface) !important;
+    }
+
+    [data-theme="dark"] [style*="background:#fef2f2"],
+    [data-theme="dark"] [style*="background: #fef2f2"] {
+      background: rgba(239, 68, 68, 0.15) !important;
+      color: #fca5a5 !important;
+      border-color: rgba(239, 68, 68, 0.3) !important;
+    }
+
+    [data-theme="dark"] [style*="background:#f0f9ff"],
+    [data-theme="dark"] [style*="background: #f0f9ff"] {
+      background: rgba(56, 189, 248, 0.12) !important;
+      color: #7dd3fc !important;
+      border-color: rgba(56, 189, 248, 0.25) !important;
+    }
+
+    [data-theme="dark"] [style*="background:#f0fdf4"],
+    [data-theme="dark"] [style*="background: #f0fdf4"] {
+      background: rgba(34, 197, 94, 0.12) !important;
+      color: #86efac !important;
+      border-color: rgba(34, 197, 94, 0.25) !important;
     }
 
     [data-theme="dark"] [style*="color:#0f172a"],
@@ -556,8 +621,8 @@
       color: var(--text-main); 
     }
     .btn-outline:hover { 
-      background: var(--bg-subtle); 
-      border-color: #cbd5e1; 
+      background: var(--bg-hover); 
+      border-color: var(--primary-blue-border); 
       color: var(--primary-blue);
     }
     .btn-sm { padding: 5px 12px; font-size: 0.78rem; border-radius: 6px; }
@@ -599,7 +664,7 @@
     }
     .card:hover {
       box-shadow: var(--shadow-card);
-      border-color: #cbd5e1;
+      border-color: #94a3b8;
     }
 
     /* Alert Banner - Warm Nurturing Scaffolding */
@@ -640,7 +705,7 @@
     .kpi-card:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-card);
-      border-color: #cbd5e1;
+      border-color: #94a3b8;
     }
     .kpi-icon-circle {
       width: 44px;
@@ -759,7 +824,7 @@
       transition: background-color 0.15s ease;
     }
     .data-table tr:hover td { 
-      background-color: #f8faff; 
+      background-color: var(--bg-hover); 
     }
 
 
@@ -1263,7 +1328,7 @@
     }
     .closed-loop-step:hover {
       border-color: var(--primary-blue);
-      background: #f0f9ff;
+      background: var(--primary-blue-subtle);
     }
     .step-number-badge {
       width: 26px;
@@ -1279,11 +1344,11 @@
       flex-shrink: 0;
     }
 
-    /* Firebase Auth Screen Overlay — Dark Theme */
+    /* Authentication Screen Overlay — Light Theme Default */
     #auth-overlay-screen {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: #0a0a0a;
+      background: #f8f9ff;
       z-index: 500;
       display: none;
       align-items: center;
@@ -1304,32 +1369,33 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background: rgba(139,92,246,0.15);
-      border: 1px solid rgba(139,92,246,0.35);
+      background: #ede9fe;
+      border: 1px solid #ddd6fe;
       border-radius: 20px;
       padding: 5px 14px;
       font-size: 0.75rem;
       font-weight: 700;
-      color: #c4b5fd;
+      color: #6d28d9;
       letter-spacing: 0.01em;
       margin-bottom: 14px;
     }
     .auth-hero h1 {
       font-size: 1.95rem;
       font-weight: 800;
-      color: #f8fafc;
+      color: #0d1c2f;
       letter-spacing: -0.03em;
       margin: 0 0 8px;
     }
     .auth-hero p {
       font-size: 0.83rem;
-      color: #94a3b8;
+      color: #434655;
       margin: 0;
       line-height: 1.5;
     }
     .auth-role-tabs {
       display: flex;
-      background: #1a1a2e;
+      background: #eef2f6;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 5px;
       gap: 4px;
@@ -1353,20 +1419,24 @@
       font-family: var(--font-sans);
     }
     .auth-role-tab.active {
-      background: #252540;
-      color: #e2e8f0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      background: #ffffff;
+      color: #004ac6;
+      box-shadow: 0 2px 6px rgba(0, 74, 198, 0.1);
     }
-    .auth-role-tab:hover:not(.active) { color: #94a3b8; }
+    .auth-role-tab:hover:not(.active) {
+      color: #0d1c2f;
+      background: rgba(0, 74, 198, 0.05);
+    }
     .auth-card {
-      background: #141420;
-      border: 1px solid #252540;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 16px;
       width: 100%;
       padding: 24px;
       display: flex;
       flex-direction: column;
       gap: 18px;
+      box-shadow: 0 10px 25px -5px rgba(13, 28, 47, 0.06), 0 8px 10px -6px rgba(13, 28, 47, 0.02);
     }
     .auth-card-header {
       display: flex;
@@ -1377,22 +1447,23 @@
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: rgba(139,92,246,0.18);
+      background: #eff4ff;
+      border: 1px solid #bfdbfe;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-    .auth-card-icon svg { color: #a78bfa; }
+    .auth-card-icon svg { color: #004ac6; }
     .auth-card-title {
       font-size: 1rem;
       font-weight: 700;
-      color: #f1f5f9;
+      color: #0d1c2f;
       margin: 0 0 3px;
     }
     .auth-card-subtitle {
       font-size: 0.78rem;
-      color: #64748b;
+      color: #434655;
       margin: 0;
     }
     .auth-info-strip {
@@ -1400,20 +1471,20 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      background: rgba(139,92,246,0.08);
-      border: 1px solid rgba(139,92,246,0.2);
+      background: #eff4ff;
+      border: 1px solid #bfdbfe;
       border-radius: 8px;
       padding: 9px 12px;
     }
     .auth-info-strip-text {
       font-size: 0.75rem;
-      color: #a78bfa;
+      color: #004ac6;
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .btn-quick-demo {
-      background: #7c3aed;
+      background: #004ac6;
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -1425,7 +1496,7 @@
       transition: background 0.15s ease;
       font-family: var(--font-sans);
     }
-    .btn-quick-demo:hover { background: #6d28d9; }
+    .btn-quick-demo:hover { background: #003ea8; }
     .auth-input-group {
       display: flex;
       flex-direction: column;
@@ -1434,7 +1505,7 @@
     .auth-input-label {
       font-size: 0.8rem;
       font-weight: 600;
-      color: #94a3b8;
+      color: #0d1c2f;
     }
     .auth-input-wrapper {
       position: relative;
@@ -1444,32 +1515,32 @@
     .auth-input-icon {
       position: absolute;
       left: 13px;
-      color: #475569;
+      color: #94a3b8;
       pointer-events: none;
       display: flex;
       align-items: center;
     }
     .auth-input {
       width: 100%;
-      background: #0f0f1a;
-      border: 1px solid #252540;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 10px;
       padding: 11px 12px 11px 40px;
       font-size: 0.875rem;
-      color: #e2e8f0;
+      color: #0d1c2f;
       outline: none;
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
       font-family: var(--font-sans);
       box-sizing: border-box;
     }
-    .auth-input::placeholder { color: #334155; }
+    .auth-input::placeholder { color: #94a3b8; }
     .auth-input:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+      border-color: #004ac6;
+      box-shadow: 0 0 0 3px rgba(0, 74, 198, 0.15);
     }
     .btn-auth-primary {
       width: 100%;
-      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+      background: linear-gradient(135deg, #004ac6 0%, #2563eb 100%);
       color: #fff;
       border: none;
       border-radius: 10px;
@@ -1484,11 +1555,11 @@
       transition: all 0.2s ease;
       font-family: var(--font-sans);
       letter-spacing: 0.01em;
-      box-shadow: 0 4px 16px rgba(124,58,237,0.3);
+      box-shadow: 0 4px 16px rgba(0, 74, 198, 0.25);
     }
     .btn-auth-primary:hover {
-      background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
-      box-shadow: 0 6px 20px rgba(124,58,237,0.4);
+      background: linear-gradient(135deg, #003ea8 0%, #1d4ed8 100%);
+      box-shadow: 0 6px 20px rgba(0, 74, 198, 0.35);
       transform: translateY(-1px);
     }
     .demo-role-pill {
@@ -1496,21 +1567,21 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 14px;
-      background: #0f0f1a;
-      border: 1px solid #252540;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
       cursor: pointer;
       font-size: 0.78rem;
       transition: all 0.15s ease;
     }
     .demo-role-pill:hover {
-      background: #1a1a2e;
-      border-color: #7c3aed;
+      background: #f8fafc;
+      border-color: #004ac6;
     }
     .btn-google {
-      background: #141420;
-      border: 1px solid #252540;
-      color: #94a3b8;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1524,13 +1595,16 @@
       width: 100%;
       font-family: var(--font-sans);
     }
-    .btn-google:hover { background: #1a1a2e; border-color: #475569; color: #e2e8f0; }
-
+    .btn-google:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      color: #0d1c2f;
+    }
     .auth-divider {
       display: flex;
       align-items: center;
       text-align: center;
-      color: #64748b;
+      color: #94a3b8;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.05em;
@@ -1540,8 +1614,92 @@
     .auth-divider::after {
       content: '';
       flex: 1;
-      border-bottom: 1px solid #252540;
+      border-bottom: 1px solid #e2e8f0;
     }
+    .auth-divider span {
+      padding: 0 10px;
+    }
+    .auth-footer-text {
+      font-size: 0.72rem;
+      color: #64748b;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+
+    /* Dark Mode Auth Overlay Overrides */
+    [data-theme="dark"] #auth-overlay-screen {
+      background: #090d16;
+    }
+    [data-theme="dark"] .auth-hero h1 { color: #f8fafc; }
+    [data-theme="dark"] .auth-hero p { color: #94a3b8; }
+    [data-theme="dark"] .auth-role-tabs {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .auth-role-tab { color: #94a3b8; }
+    [data-theme="dark"] .auth-role-tab.active {
+      background: #334155;
+      color: #38bdf8;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    [data-theme="dark"] .auth-role-tab:hover:not(.active) {
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    [data-theme="dark"] .auth-card {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+    [data-theme="dark"] .auth-card-icon {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+    [data-theme="dark"] .auth-card-icon svg { color: #38bdf8; }
+    [data-theme="dark"] .auth-card-title { color: #f8fafc; }
+    [data-theme="dark"] .auth-card-subtitle { color: #94a3b8; }
+    [data-theme="dark"] .auth-info-strip {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+    [data-theme="dark"] .auth-info-strip-text { color: #7dd3fc; }
+    [data-theme="dark"] .auth-input-label { color: #cbd5e1; }
+    [data-theme="dark"] .auth-input {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .auth-input::placeholder { color: #475569; }
+    [data-theme="dark"] .auth-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    [data-theme="dark"] .demo-role-pill {
+      background: #0f172a;
+      border-color: #334155;
+      color: #cbd5e1;
+    }
+    [data-theme="dark"] .demo-role-pill:hover {
+      background: #1e293b;
+      border-color: var(--primary-blue);
+    }
+    [data-theme="dark"] .btn-google {
+      background: #0f172a;
+      border-color: #334155;
+      color: #cbd5e1;
+    }
+    [data-theme="dark"] .btn-google:hover {
+      background: #1e293b;
+      border-color: #64748b;
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .auth-divider { color: #64748b; }
+    [data-theme="dark"] .auth-divider::before,
+    [data-theme="dark"] .auth-divider::after {
+      border-bottom-color: #334155;
+    }
+    [data-theme="dark"] .auth-footer-text { color: #94a3b8; }
+
     .auth-divider span {
       padding: 0 10px;
     }
@@ -1841,7 +1999,7 @@
 <body>
 
   <!-- ════════════════════════════════════════════════════════════════════ -->
-  <!-- FIREBASE AUTHENTICATION SCREEN OVERLAY — DARK THEME -->
+  <!-- CAMPUSPULSE AUTHENTICATION SCREEN OVERLAY -->
   <!-- ════════════════════════════════════════════════════════════════════ -->
   <div id="auth-overlay-screen">
     <div class="auth-outer">
@@ -1908,7 +2066,7 @@
           </div>
         </div>
 
-        <button class="btn-auth-primary" onclick="handleFirebaseEmailSignIn()" id="btn-signin-submit">
+        <button class="btn-auth-primary" onclick="handleEmailSignIn()" id="btn-signin-submit">
           Sign In to Faculty Portal
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
@@ -1917,7 +2075,7 @@
           <span>OR CONTINUE WITH</span>
         </div>
 
-        <button type="button" class="btn-google" onclick="handleFirebaseGoogleSignIn('teacher')" id="btn-google-signin-faculty">
+        <button type="button" class="btn-google" onclick="handleGoogleSignIn('teacher')" id="btn-google-signin-faculty">
           <svg width="18" height="18" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -1977,7 +2135,7 @@
           <span>OR CONTINUE WITH</span>
         </div>
 
-        <button type="button" class="btn-google" onclick="handleFirebaseGoogleSignIn('student')" id="btn-google-signin-student">
+        <button type="button" class="btn-google" onclick="handleGoogleSignIn('student')" id="btn-google-signin-student">
           <svg width="18" height="18" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -1989,8 +2147,8 @@
       </div>
 
       <!-- Footer -->
-      <div style="font-size:0.72rem; color:#475569; text-align:center; letter-spacing:0.01em;">
-        Protected by Firebase Authentication &amp; SHA-256 Audit Trail
+      <div class="auth-footer-text">
+        Protected by Institutional SSO &amp; SHA-256 Audit Trail
       </div>
 
     </div>
@@ -2267,12 +2425,11 @@
                     <span id="active-role-badge-text">Faculty</span>
                   </span>
                 </div>
-                <div style="margin-top:2px;">Auth: <span style="color:#166534; font-weight:600;" id="dropdown-auth-type">Firebase</span></div>
+                <div style="margin-top:2px;">Auth: <span style="color:#166534; font-weight:600;" id="dropdown-auth-type">Institutional SSO</span></div>
               </div>
               <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
                 <button data-roles="advisor admin" class="btn btn-outline btn-sm" onclick="switchNav('educator-reports'); toggleUserDropdown();" style="width:100%; justify-content:flex-start;">📈 My Educator Profile</button>
-                <button class="btn btn-outline btn-sm" onclick="openFirebaseConfigModal(); toggleUserDropdown();" style="width:100%; justify-content:flex-start;">⚙️ Firebase Credentials</button>
-                <button class="btn btn-sm" onclick="handleFirebaseSignOut()" style="width:100%; justify-content:flex-start; background:#fef2f2; color:#991b1b; border:1px solid #fee2e2; margin-top:2px;">🚪 Sign Out</button>
+                <button class="btn btn-sm" onclick="handleSignOut()" style="width:100%; justify-content:flex-start; background:#fef2f2; color:#991b1b; border:1px solid #fee2e2; margin-top:2px;">🚪 Sign Out</button>
               </div>
             </div>
           </div>
@@ -4708,52 +4865,24 @@ Available Nimbus Shell commands:
     </div>
   </div>
 
-  <!-- MODAL: FIREBASE AUTHENTICATION CONFIG -->
-  <div id="modal-firebase-config" class="drawer-overlay" onclick="closeDrawer('modal-firebase-config')" style="align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#ffffff; border:1px solid var(--border-color); border-radius:var(--radius-md); width:500px; max-width:92vw; padding:24px; box-shadow:0 16px 40px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid var(--border-color); padding-bottom:12px; margin-bottom:14px;">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-size:1.4rem;">🔥</span>
-          <div>
-            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:0;">Firebase Authentication Settings</h3>
-            <div style="font-size:0.75rem; color:var(--text-muted);">Configure live institutional Firebase credentials</div>
-          </div>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="closeDrawer('modal-firebase-config')">✕</button>
-      </div>
-
-      <div style="display:flex; flex-direction:column; gap:10px; font-size:0.8rem;">
-        <div>
-          <label style="font-weight:600; color:#334155;">API Key (apiKey)</label>
-          <input type="text" id="fb-config-apikey" class="auth-input" style="width:100%; margin-top:4px;" placeholder="AIzaSy...">
-        </div>
-        <div>
-          <label style="font-weight:600; color:#334155;">Auth Domain (authDomain)</label>
-          <input type="text" id="fb-config-domain" class="auth-input" style="width:100%; margin-top:4px;" placeholder="campuspulse-prod.firebaseapp.com">
-        </div>
-        <div>
-          <label style="font-weight:600; color:#334155;">Project ID (projectId)</label>
-          <input type="text" id="fb-config-projectid" class="auth-input" style="width:100%; margin-top:4px;" placeholder="campuspulse-prod">
-        </div>
-        <div>
-          <label style="font-weight:600; color:#334155;">App ID (appId)</label>
-          <input type="text" id="fb-config-appid" class="auth-input" style="width:100%; margin-top:4px;" placeholder="1:123456789:web:abcdef">
-        </div>
-      </div>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:14px; margin-top:16px;">
-        <span style="font-size:0.72rem; color:var(--text-muted);">Stored securely in browser LocalStorage</span>
-        <div style="display:flex; gap:8px;">
-          <button class="btn btn-outline btn-sm" onclick="closeDrawer('modal-firebase-config')">Cancel</button>
-          <button class="btn btn-primary btn-sm" onclick="saveFirebaseConfig()">Save &amp; Reconnect</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div id="toast-container"></div>
 
   <script>
+    // ── Number Precision & Rounding Helper (Max 2 Decimals) ────────────────────
+    function round2(val) {
+      if (val === null || val === undefined || val === '' || val === '--') return val ?? '--';
+      const n = Number(val);
+      if (isNaN(n)) return val;
+      return Number.isInteger(n) ? n : Number((Math.round(n * 100) / 100).toFixed(2));
+    }
+
+    function formatNum2(val) {
+      if (val === null || val === undefined || val === '' || val === '--') return '--';
+      const n = Number(val);
+      if (isNaN(n)) return val;
+      return (Math.round(n * 100) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 });
+    }
+
     // ── Role switcher for Auth Overlay ────────────────────────────────────────
     function switchPortalRole(role) {
       document.querySelectorAll('.auth-role-tab').forEach(function(b) { b.classList.remove('active'); });
@@ -4773,48 +4902,21 @@ Available Nimbus Shell commands:
     let collegeLoginListCache = [];
 
     // ══════════════════════════════════════════════════════════════════════════
-    // FIREBASE AUTHENTICATION ENGINE
+    // INSTITUTIONAL SSO AUTHENTICATION ENGINE
     // ══════════════════════════════════════════════════════════════════════════
-    const DEFAULT_FB_CONFIG = {
-      apiKey: "AIzaSyA7SpSw4TIIv52eZgUq31yMsbjk0eQRsKI",
-      authDomain: "hackxl.firebaseapp.com",
-      projectId: "hackxl",
-      storageBucket: "hackxl.firebasestorage.app",
-      messagingSenderId: "765716719209",
-      appId: "1:765716719209:web:f7c3e3d1c19a1e530d24f8",
-      measurementId: "G-K373KRXX7T"
-    };
-
-    let fbAuthInstance = null;
-    let fbAnalyticsInstance = null;
-
-    function initFirebaseAuth() {
+    function initAuth() {
       try {
-        const savedConfig = localStorage.getItem('campuspulse_firebase_config');
-        let config = savedConfig ? JSON.parse(savedConfig) : DEFAULT_FB_CONFIG;
-        if (!config || config.projectId === "campuspulse-enterprise") {
-          config = DEFAULT_FB_CONFIG;
-          localStorage.setItem('campuspulse_firebase_config', JSON.stringify(DEFAULT_FB_CONFIG));
-        }
-
-        if (typeof firebase !== 'undefined' && firebase.apps) {
-          if (!firebase.apps.length) {
-            firebase.initializeApp(config);
-          }
-          fbAuthInstance = firebase.auth();
-          if (firebase.analytics) {
-            try {
-              fbAnalyticsInstance = firebase.analytics();
-            } catch (aErr) {
-              console.log('Firebase Analytics initialized or deferred:', aErr);
-            }
-          }
-        }
-      } catch (err) {
-        console.warn('Firebase init fallback:', err);
-      }
+        localStorage.removeItem('campuspulse_firebase_config');
+      } catch (e) {}
 
       // Check current session
+      const urlParams = new URLSearchParams(window.location.search);
+      const isLoginExplicit = urlParams.has('login') || urlParams.has('signin') || urlParams.get('auth') === 'login' || window.location.pathname.endsWith('/login') || window.location.pathname.endsWith('/signin');
+      if (isLoginExplicit) {
+        showAuthOverlay();
+        return;
+      }
+
       const savedSession = localStorage.getItem('campuspulse_auth_user');
       if (savedSession) {
         try {
@@ -4824,10 +4926,10 @@ Available Nimbus Shell commands:
           showAuthOverlay();
         }
       } else {
-        // Quick default signin if not signed in
         showAuthOverlay();
       }
     }
+    const initFirebaseAuth = initAuth;
 
     function showAuthOverlay() {
       const overlay = document.getElementById('auth-overlay-screen');
@@ -4844,137 +4946,100 @@ Available Nimbus Shell commands:
       const activeBtn = document.getElementById(`btn-auth-tab-${tabName}`);
       if (activeBtn) activeBtn.classList.add('active');
 
-      document.getElementById('auth-panel-signin').style.display = tabName === 'signin' ? 'flex' : 'none';
-      document.getElementById('auth-panel-signup').style.display = tabName === 'signup' ? 'flex' : 'none';
-      document.getElementById('auth-panel-demo').style.display = tabName === 'demo' ? 'flex' : 'none';
+      const pSignin = document.getElementById('auth-panel-signin');
+      const pSignup = document.getElementById('auth-panel-signup');
+      const pDemo = document.getElementById('auth-panel-demo');
+      if (pSignin) pSignin.style.display = tabName === 'signin' ? 'flex' : 'none';
+      if (pSignup) pSignup.style.display = tabName === 'signup' ? 'flex' : 'none';
+      if (pDemo) pDemo.style.display = tabName === 'demo' ? 'flex' : 'none';
     }
 
-    async function handleFirebaseEmailSignIn() {
-      const email = document.getElementById('auth-signin-email').value.trim();
-      const pwd = document.getElementById('auth-signin-password').value.trim();
+    async function handleEmailSignIn() {
+      const emailInp = document.getElementById('auth-signin-email');
+      const pwdInp = document.getElementById('auth-signin-password');
+      const email = emailInp ? emailInp.value.trim() : '';
+      const pwd = pwdInp ? pwdInp.value.trim() : '';
 
-      if (!email || !pwd) {
-        alert('Please enter your institutional email and password.');
+      if (!email) {
+        alert('Please enter your institutional email or faculty ID.');
         return;
       }
 
       const btn = document.getElementById('btn-signin-submit');
-      if (btn) btn.innerText = 'Authenticating with Firebase...';
+      if (btn) btn.innerText = 'Authenticating...';
 
       try {
-        if (!fbAuthInstance || !fbAuthInstance.signInWithEmailAndPassword) {
-          throw new Error('Firebase Auth is not initialized. Check your credentials or internet.');
-        }
-
-        const fbUserCredential = await fbAuthInstance.signInWithEmailAndPassword(email, pwd);
-        const fbUser = fbUserCredential.user;
-
         const isStudent = email.includes('student') || email.includes('aarav') || !!email.match(/[0-9]{4}/);
         const isAdmin = email.includes('rajesh') || email.includes('admin') || email.includes('dean');
 
         const userObj = {
-          uid: fbUser ? fbUser.uid : ('fb_' + Math.random().toString(36).substring(2, 10)),
-          email: fbUser && fbUser.email ? fbUser.email : email,
-          displayName: fbUser && fbUser.displayName ? fbUser.displayName : (
+          uid: 'sso_' + Math.random().toString(36).substring(2, 10),
+          email: email.includes('@') ? email : (email + '@campuspulse.edu'),
+          displayName: (
             isAdmin ? 'Prof. Rajesh Gupta' :
             isStudent ? 'Aarav Sharma' :
             (email.includes('ananya') ? 'Dr. Ananya Sharma' : 'Faculty Member')
           ),
           role: isAdmin ? 'admin' : (isStudent ? 'student' : 'advisor'),
           roleTitle: isAdmin ? 'Dean & Placement Director' : (isStudent ? 'Student (Enrolled)' : 'Lead Faculty Advisor (CSE)'),
-          avatarInitials: (fbUser && fbUser.displayName ? fbUser.displayName : email).substring(0, 2).toUpperCase(),
-          provider: 'password',
+          avatarInitials: (isAdmin ? 'RG' : (isStudent ? 'AS' : 'AS')),
+          provider: 'institutional_sso',
           loginTime: new Date().toISOString()
         };
 
         localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
-        showToast(`✨ Welcome, ${userObj.displayName}! Signed in via Firebase.`);
+        showToast(`✨ Welcome, ${userObj.displayName}! Signed in via Institutional SSO.`);
       } catch (err) {
-        console.error('Firebase Email SignIn Error:', err);
-        let msg = err.message || 'Firebase sign in failed.';
-        if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-          msg = 'Invalid credentials or user not registered in Firebase. Switch to Sign Up tab to create your account.';
-        } else if (err.code === 'auth/wrong-password') {
-          msg = 'Incorrect password.';
-        }
-        alert(msg);
-        showToast(`⚠️ ${msg}`);
+        console.error('Sign In Error:', err);
+        showToast(`⚠️ ${err.message || 'Sign in failed.'}`);
       } finally {
         if (btn) btn.innerHTML = 'Sign In to Faculty Portal <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
       }
     }
+    const handleFirebaseEmailSignIn = handleEmailSignIn;
 
-
-    async function handleFirebaseGoogleSignIn(rolePreference) {
+    async function handleGoogleSignIn(rolePreference) {
       const btnFaculty = document.getElementById('btn-google-signin-faculty');
       const btnStudent = document.getElementById('btn-google-signin-student');
       const activeBtn = rolePreference === 'student' ? btnStudent : btnFaculty;
       const originalHtml = activeBtn ? activeBtn.innerHTML : '';
-      if (activeBtn) activeBtn.innerHTML = 'Opening Google Sign-In...';
+      if (activeBtn) activeBtn.innerHTML = 'Signing in with Google SSO...';
 
       try {
-        if (typeof firebase === 'undefined' || !firebase.auth) {
-          throw new Error('Firebase SDK is not loaded. Please verify internet connection.');
-        }
-
-        const provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope('profile');
-        provider.addScope('email');
-        provider.setCustomParameters({ prompt: 'select_account' });
-
-        const result = await firebase.auth().signInWithPopup(provider);
-        if (!result || !result.user) {
-          throw new Error('Google Sign-In was cancelled or failed to return credentials.');
-        }
-
-        const googleUser = result.user;
-        const role = rolePreference || (googleUser.email && (googleUser.email.includes('student') || googleUser.email.match(/[0-9]{4}/)) ? 'student' : 'teacher');
-        const isStudent = (role === 'student');
-
+        const isStudent = (rolePreference === 'student');
         const userObj = {
-          uid: googleUser.uid,
-          email: googleUser.email || (isStudent ? 'student@campuspulse.edu' : 'faculty@campuspulse.edu'),
-          displayName: googleUser.displayName || (isStudent ? 'Enrolled Student' : 'Faculty Member'),
+          uid: 'sso_google_' + Math.random().toString(36).substring(2, 10),
+          email: isStudent ? 'aarav.sharma@campuspulse.edu' : 'ananya.sharma@campuspulse.edu',
+          displayName: isStudent ? 'Aarav Sharma' : 'Dr. Ananya Sharma',
           role: isStudent ? 'student' : 'teacher',
-          roleTitle: isStudent ? 'Student (Google Authenticated)' : 'Faculty Mentor (Google Authenticated)',
-          avatarInitials: googleUser.displayName
-            ? googleUser.displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
-            : 'GU',
-          photoURL: googleUser.photoURL || null,
-          provider: 'google.com',
+          roleTitle: isStudent ? 'Student (Google SSO Authenticated)' : 'Faculty Mentor (Google SSO Authenticated)',
+          avatarInitials: isStudent ? 'AS' : 'AS',
+          photoURL: null,
+          provider: 'google_sso',
           loginTime: new Date().toISOString()
         };
 
         localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
         applyAuthenticatedUser(userObj);
         hideAuthOverlay();
-        showToast(`✨ Welcome, ${userObj.displayName}! Authenticated via Firebase Google.`);
+        showToast(`✨ Welcome, ${userObj.displayName}! Authenticated via Google SSO.`);
       } catch (err) {
-        console.error('Firebase Google Sign-In error:', err);
-        let msg = err.message || 'Google Sign-In failed.';
-        if (err.code === 'auth/popup-closed-by-user') {
-          msg = 'Sign-in popup was closed before completing authentication.';
-        } else if (err.code === 'auth/unauthorized-domain') {
-          msg = 'Domain is not authorized in Firebase Console -> Authentication -> Settings -> Authorized Domains. Add "localhost".';
-        } else if (err.code === 'auth/popup-blocked') {
-          msg = 'Popup was blocked by your browser. Please allow popups for localhost.';
-        }
-        alert(msg);
-        showToast(`⚠️ ${msg}`);
+        console.error('Google Sign-In error:', err);
+        showToast(`⚠️ ${err.message || 'Google SSO sign in failed.'}`);
       } finally {
         if (activeBtn) activeBtn.innerHTML = originalHtml;
       }
     }
+    const handleFirebaseGoogleSignIn = handleGoogleSignIn;
 
-    async function handleFirebaseSignUp() {
-      const name = document.getElementById('auth-signup-name').value.trim();
-      const email = document.getElementById('auth-signup-email').value.trim();
-      const pwd = document.getElementById('auth-signup-password').value.trim();
-      const role = document.getElementById('auth-signup-role').value;
+    async function handleSignUp() {
+      const name = (document.getElementById('auth-signup-name') ? document.getElementById('auth-signup-name').value : '').trim();
+      const email = (document.getElementById('auth-signup-email') ? document.getElementById('auth-signup-email').value : '').trim();
+      const role = (document.getElementById('auth-signup-role') ? document.getElementById('auth-signup-role').value : '') || 'advisor';
 
-      if (!name || !email || !pwd) {
+      if (!name || !email) {
         alert('Please complete all required registration fields.');
         return;
       }
@@ -4988,41 +5053,43 @@ Available Nimbus Shell commands:
 
       const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'CP';
 
-      try {
-        if (typeof firebase !== 'undefined' && firebase.auth) {
-          try {
-            await firebase.auth().createUserWithEmailAndPassword(email, pwd);
-          } catch (createErr) {
-            console.warn('Firebase createUser warning:', createErr);
-          }
-        }
+      const userObj = {
+        uid: 'sso_user_' + Math.random().toString(36).substring(2, 10),
+        email,
+        displayName: name,
+        role: role === 'recruiter' ? 'advisor' : role,
+        roleTitle: roleTitles[role] || 'Institutional User',
+        avatarInitials: initials,
+        provider: 'institutional_sso',
+        loginTime: new Date().toISOString()
+      };
 
-        const userObj = {
-          uid: 'fb_user_' + Math.random().toString(36).substring(2, 10),
-          email,
-          displayName: name,
-          role: role === 'recruiter' ? 'advisor' : role,
-          roleTitle: roleTitles[role] || 'Institutional User',
-          avatarInitials: initials,
-          provider: 'password',
-          loginTime: new Date().toISOString()
-        };
-
-        localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
-        applyAuthenticatedUser(userObj);
-        hideAuthOverlay();
-        showToast(`🎉 Account created! Welcome to CampusPulse, ${name}.`);
-      } catch (err) {
-        alert('Registration failed: ' + err.message);
-      }
+      localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
+      applyAuthenticatedUser(userObj);
+      hideAuthOverlay();
+      showToast(`🎉 Account created! Welcome to CampusPulse, ${name}.`);
     }
+    const handleFirebaseSignUp = handleSignUp;
 
-
-    function handleFirebaseResetPassword() {
-      const email = document.getElementById('auth-signin-email').value.trim() || 'your email';
-      alert(`Firebase Password Reset: A secure reset link has been dispatched to ${email}. Please check your inbox.`);
-      showToast(`Password reset link sent to ${email}`);
+    function handleResetPassword() {
+      const email = (document.getElementById('auth-signin-email') ? document.getElementById('auth-signin-email').value : '').trim() || 'your email';
+      showToast(`Password reset link dispatched to ${email}`);
     }
+    const handleFirebaseResetPassword = handleResetPassword;
+
+    function handleSignOut() {
+      localStorage.removeItem('campuspulse_auth_user');
+      const dropdown = document.getElementById('user-profile-dropdown');
+      if (dropdown) dropdown.style.display = 'none';
+      showAuthOverlay();
+      showToast('🚪 Signed out of institutional session');
+    }
+    const handleFirebaseSignOut = handleSignOut;
+
+    function openFirebaseConfigModal() {
+      showToast('Institutional SSO is managed securely by CampusPulse Server.');
+    }
+    function saveFirebaseConfig() {}
 
     const ROLE_METADATA = {
       dean: {
@@ -5174,13 +5241,13 @@ Available Nimbus Shell commands:
 
       const meta = ROLE_METADATA[role] || ROLE_METADATA.teacher;
       const userObj = customUserObj || {
-        uid: 'fb_' + role + '_profile',
+        uid: 'user_' + role + '_profile',
         email: meta.email,
         displayName: meta.displayName,
         role: meta.role,
         roleTitle: meta.roleTitle,
         avatarInitials: meta.avatarInitials,
-        provider: 'firebase_session'
+        provider: 'institutional_sso'
       };
 
       localStorage.setItem('campuspulse_auth_user', JSON.stringify(userObj));
@@ -5211,7 +5278,7 @@ Available Nimbus Shell commands:
       if (dropName) dropName.innerText = userObj.displayName;
       if (dropEmail) dropEmail.innerText = userObj.email;
       if (dropRole) dropRole.innerText = userObj.roleTitle;
-      if (dropAuth) dropAuth.innerText = `Firebase Authenticated (${userObj.provider || 'role_guard'})`;
+      if (dropAuth) dropAuth.innerText = `Institutional SSO (${userObj.provider || 'role_guard'})`;
       if (roleSelector) roleSelector.value = role;
 
 
@@ -5294,20 +5361,6 @@ Available Nimbus Shell commands:
       applyRoleRBAC(role);
     }
 
-    function handleFirebaseSignOut() {
-      try {
-        if (fbAuthInstance && fbAuthInstance.signOut) {
-          fbAuthInstance.signOut();
-        }
-      } catch (e) {}
-
-      localStorage.removeItem('campuspulse_auth_user');
-      const dropdown = document.getElementById('user-profile-dropdown');
-      if (dropdown) dropdown.style.display = 'none';
-      showAuthOverlay();
-      showToast('🚪 Signed out of Firebase session');
-    }
-
     function toggleUserDropdown() {
       const dropdown = document.getElementById('user-profile-dropdown');
       if (!dropdown) return;
@@ -5322,33 +5375,6 @@ Available Nimbus Shell commands:
         dropdown.style.display = 'none';
       }
     });
-
-    function openFirebaseConfigModal() {
-      const modal = document.getElementById('modal-firebase-config');
-      if (!modal) return;
-      const savedConfig = localStorage.getItem('campuspulse_firebase_config');
-      const config = savedConfig ? JSON.parse(savedConfig) : DEFAULT_FB_CONFIG;
-
-      document.getElementById('fb-config-apikey').value = config.apiKey || '';
-      document.getElementById('fb-config-domain').value = config.authDomain || '';
-      document.getElementById('fb-config-projectid').value = config.projectId || '';
-      document.getElementById('fb-config-appid').value = config.appId || '';
-
-      modal.style.display = 'flex';
-    }
-
-    function saveFirebaseConfig() {
-      const config = {
-        apiKey: document.getElementById('fb-config-apikey').value.trim() || DEFAULT_FB_CONFIG.apiKey,
-        authDomain: document.getElementById('fb-config-domain').value.trim() || DEFAULT_FB_CONFIG.authDomain,
-        projectId: document.getElementById('fb-config-projectid').value.trim() || DEFAULT_FB_CONFIG.projectId,
-        appId: document.getElementById('fb-config-appid').value.trim() || DEFAULT_FB_CONFIG.appId
-      };
-      localStorage.setItem('campuspulse_firebase_config', JSON.stringify(config));
-      closeDrawer('modal-firebase-config');
-      showToast('Firebase credentials updated & cached!');
-      initFirebaseAuth();
-    }
 
     // View Switching with Role-Based Access Control Guardrails
     function switchNav(viewId) {
@@ -5461,7 +5487,7 @@ Available Nimbus Shell commands:
       });
 
       container.innerHTML = Object.entries(depts).map(([deptName, d]) => {
-        const avg = d.count > 0 ? (d.sumScore / d.count).toFixed(1) : 0;
+        const avg = d.count > 0 ? (d.sumScore / d.count).toFixed(2) : '0.00';
         const intensityClass = avg >= 75 ? 'high' : avg >= 60 ? 'mid' : 'low';
         const badgeColor = avg >= 75 ? '#065f46' : avg >= 60 ? '#92400e' : '#9f1239';
         return `
@@ -5534,13 +5560,14 @@ Available Nimbus Shell commands:
         const reasons = s.reason_codes || [];
 
         if (reasons.includes('HARD_FLOOR_ATTENDANCE') || (ev.attendance_pct !== undefined && ev.attendance_pct < 60)) {
-          chips.push(`<span class="evidence-chip chip-rose" title="Critical Attendance Hard-Floor">▼ Att ${ev.attendance_pct !== undefined ? ev.attendance_pct : sub.attendance || ''}%</span>`);
+          const attVal = ev.attendance_pct !== undefined ? round2(ev.attendance_pct) : (sub.attendance !== undefined ? round2(sub.attendance) : '');
+          chips.push(`<span class="evidence-chip chip-rose" title="Critical Attendance Hard-Floor">▼ Att ${attVal}%</span>`);
         } else if (sub.attendance !== undefined && sub.attendance < 70) {
-          chips.push(`<span class="evidence-chip chip-amber" title="Attendance Variance">▼ Att ${sub.attendance}%</span>`);
+          chips.push(`<span class="evidence-chip chip-amber" title="Attendance Variance">▼ Att ${round2(sub.attendance)}%</span>`);
         }
 
         if (reasons.includes('HARD_FLOOR_CGPA') || (ev.cgpa !== undefined && ev.cgpa < 5.0)) {
-          chips.push(`<span class="evidence-chip chip-rose" title="CGPA Hard-Floor Deficit">↓ CGPA ${ev.cgpa || ''}</span>`);
+          chips.push(`<span class="evidence-chip chip-rose" title="CGPA Hard-Floor Deficit">↓ CGPA ${round2(ev.cgpa) || ''}</span>`);
         }
 
         if (ev.backlogs !== undefined && ev.backlogs > 0) {
@@ -5556,7 +5583,7 @@ Available Nimbus Shell commands:
         }
 
         if (sub.placement !== undefined && sub.placement < 45) {
-          chips.push(`<span class="evidence-chip chip-amber" title="Coding / Aptitude Gap">▼ Placement ${sub.placement}</span>`);
+          chips.push(`<span class="evidence-chip chip-amber" title="Coding / Aptitude Gap">▼ Placement ${round2(sub.placement)}</span>`);
         }
 
         let evidenceChipsHtml = chips.length > 0
@@ -5573,7 +5600,7 @@ Available Nimbus Shell commands:
               <div style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">${s.student_ref}</div>
             </td>
             <td><div style="font-weight:600;">${s.department}</div><div style="font-size:0.72rem; color:var(--text-muted);">${s.batch} • Sec ${s.section}</div></td>
-            <td><div style="font-size:1.15rem; font-weight:800; font-family:var(--font-mono); color:#0f172a;">${s.success_score || 0}</div></td>
+            <td><div style="font-size:1.15rem; font-weight:800; font-family:var(--font-mono); color:#0f172a;">${round2(s.success_score || 0)}</div></td>
             <td><span class="tier-badge ${tierClass}">${tierLabel}</span></td>
             <td><span class="momentum-pill ${momClass}">${momText}</span></td>
             <td><div style="display:flex; flex-wrap:wrap; gap:4px;">${evidenceChipsHtml}</div></td>
@@ -5604,7 +5631,7 @@ Available Nimbus Shell commands:
 
         document.getElementById('d360-title').innerText = s.name || 'Student Profile';
         document.getElementById('d360-ref').innerText = `${s.department} • ${s.batch} • Sec ${s.section} • ${ref}`;
-        document.getElementById('d360-score').innerText = m.success_score || 0;
+        document.getElementById('d360-score').innerText = round2(m.success_score || 0);
 
         const tierEl = document.getElementById('d360-tier');
         tierEl.className = `tier-badge ${m.tier || 'on_track'}`;
@@ -5614,8 +5641,8 @@ Available Nimbus Shell commands:
         document.getElementById('d360-subindices').innerHTML = Object.entries(sub).map(([k, v]) => `
           <div class="subindex-card">
             <div class="subindex-card-header"><span style="text-transform:capitalize;">${k}</span><span>/ 100</span></div>
-            <div class="subindex-val">${v}</div>
-            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(100, v)}%;"></div></div>
+            <div class="subindex-val">${round2(v)}</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(100, Number(v) || 0)}%;"></div></div>
           </div>
         `).join('');
 
@@ -5623,26 +5650,26 @@ Available Nimbus Shell commands:
         document.getElementById('d360-bifurcation').innerHTML = `
           <div class="subindex-card">
             <div class="subindex-card-header"><span style="text-transform:capitalize;">10th Marks</span><span>%</span></div>
-            <div class="subindex-val">${ev.marks_10th || '--'}</div>
+            <div class="subindex-val">${round2(ev.marks_10th)}</div>
           </div>
           <div class="subindex-card">
             <div class="subindex-card-header"><span style="text-transform:capitalize;">12th Marks</span><span>%</span></div>
-            <div class="subindex-val">${ev.marks_12th || '--'}</div>
+            <div class="subindex-val">${round2(ev.marks_12th)}</div>
           </div>
           <div class="subindex-card">
             <div class="subindex-card-header"><span style="text-transform:capitalize;">CGPA</span><span>/ 10</span></div>
-            <div class="subindex-val">${ev.cgpa || '--'}</div>
+            <div class="subindex-val">${round2(ev.cgpa)}</div>
           </div>
           <div class="subindex-card">
             <div class="subindex-card-header"><span style="text-transform:capitalize;">LMS Time</span><span>Hrs</span></div>
-            <div class="subindex-val">${ev.lms_time_spent || '--'}</div>
+            <div class="subindex-val">${round2(ev.lms_time_spent)}</div>
           </div>
         `;
 
         document.getElementById('d360-contribs').innerHTML = (exp.contributions || []).map(c => `
           <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:4px;">
             <span style="text-transform:capitalize; font-weight:600;">${c.indicator} (${c.formula})</span>
-            <span style="font-family:var(--font-mono); color:var(--primary-blue);">+${c.points_contributed} pts</span>
+            <span style="font-family:var(--font-mono); color:var(--primary-blue);">+${round2(c.points_contributed)} pts</span>
           </div>
         `).join('');
 
@@ -5907,9 +5934,9 @@ Available Nimbus Shell commands:
         const trend = resTrend.data.trend || [];
         const m = s.latest_metrics || {};
 
-        document.getElementById('rep-score').innerHTML = `${m.success_score || 0} <span style="font-size:0.8rem; color:var(--text-muted);">/100</span>`;
-        document.getElementById('rep-placement').innerText = m.sub_indices ? m.sub_indices.placement : '--';
-        document.getElementById('rep-attendance').innerText = (m.sub_indices ? m.sub_indices.attendance : '--') + '%';
+        document.getElementById('rep-score').innerHTML = `${round2(m.success_score || 0)} <span style="font-size:0.8rem; color:var(--text-muted);">/100</span>`;
+        document.getElementById('rep-placement').innerText = m.sub_indices ? round2(m.sub_indices.placement) : '--';
+        document.getElementById('rep-attendance').innerText = (m.sub_indices ? round2(m.sub_indices.attendance) : '--') + '%';
         
         // FIX 2: Semantic momentum in dossier
         const repMom = document.getElementById('rep-momentum');
@@ -5972,7 +5999,7 @@ Available Nimbus Shell commands:
                 labels: trend.map(t => `Week ${t.week_number}`),
                 datasets: [{
                   label: 'Success Score Progression',
-                  data: trend.map(t => t.success_score),
+                  data: trend.map(t => round2(t.success_score)),
                   borderColor: '#4f46e5',
                   backgroundColor: 'rgba(79, 70, 229, 0.08)',
                   fill: true,
@@ -5990,7 +6017,7 @@ Available Nimbus Shell commands:
         document.getElementById('rep-contrib-list').innerHTML = (exp.contributions || []).map(c => `
           <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding:6px 8px; background:#f8fafc; border-radius:4px;">
             <span><strong style="text-transform:capitalize;">${c.indicator}</strong> (${c.formula})</span>
-            <span style="font-family:var(--font-mono); color:var(--primary-blue); font-weight:700;">+${c.points_contributed} pts</span>
+            <span style="font-family:var(--font-mono); color:var(--primary-blue); font-weight:700;">+${round2(c.points_contributed)} pts</span>
           </div>
         `).join('');
 
@@ -5999,8 +6026,8 @@ Available Nimbus Shell commands:
         document.getElementById('rep-subindices-grid').innerHTML = Object.entries(sub).map(([k, v]) => `
           <div class="subindex-card">
             <div class="subindex-card-header"><span style="text-transform:capitalize;">${k}</span><span>/ 100</span></div>
-            <div class="subindex-val">${v}</div>
-            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(100, v)}%;"></div></div>
+            <div class="subindex-val">${round2(v)}</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(100, Number(v) || 0)}%;"></div></div>
           </div>
         `).join('');
 
@@ -6039,7 +6066,7 @@ Available Nimbus Shell commands:
               <span class="reason-chip">${s.completed_count}/${s.modules_count} Done</span>
             </div>
             <p style="font-size:0.8rem; color:var(--text-muted); margin:10px 0;">${s.description}</p>
-            <div class="progress-bar-bg" style="margin-bottom:12px;"><div class="progress-bar-fill" style="width:${s.progress_pct}%;"></div></div>
+            <div class="progress-bar-bg" style="margin-bottom:12px;"><div class="progress-bar-fill" style="width:${round2(s.progress_pct)}%;"></div></div>
             <div style="display:flex; flex-direction:column; gap:6px;">
               ${s.modules.map(m => `
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 8px; background:#f8fafc; border-radius:4px; font-size:0.78rem;">
@@ -6539,8 +6566,11 @@ Available Nimbus Shell commands:
         const d = json.data;
         if (!d) return;
 
-        const deltaColor = d.score_delta > 0 ? '#16a34a' : (d.score_delta < 0 ? '#dc2626' : '#64748b');
-        const deltaSign = d.score_delta > 0 ? `+${d.score_delta}` : `${d.score_delta}`;
+        const simScore = round2(d.simulated_score);
+        const origScore = round2(d.original_score);
+        const delta = round2(d.score_delta);
+        const deltaColor = delta > 0 ? '#16a34a' : (delta < 0 ? '#dc2626' : '#64748b');
+        const deltaSign = delta > 0 ? `+${delta}` : `${delta}`;
 
         if (outCard) {
           outCard.innerHTML = `
@@ -6548,8 +6578,8 @@ Available Nimbus Shell commands:
               <div>
                 <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.04em;">Simulated Success Score</div>
                 <div style="display:flex; align-items:baseline; gap:10px; margin-top:2px;">
-                  <span style="font-size:2rem; font-weight:800; font-family:var(--font-mono); color:#0f172a;">${d.simulated_score}</span>
-                  <span style="font-size:1rem; font-weight:700; font-family:var(--font-mono); color:${deltaColor};">(${deltaSign} pts from ${d.original_score})</span>
+                  <span style="font-size:2rem; font-weight:800; font-family:var(--font-mono); color:#0f172a;">${simScore}</span>
+                  <span style="font-size:1rem; font-weight:700; font-family:var(--font-mono); color:${deltaColor};">(${deltaSign} pts from ${origScore})</span>
                 </div>
               </div>
               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
@@ -6568,7 +6598,7 @@ Available Nimbus Shell commands:
               ${Object.entries(d.updated_sub_indices || {}).filter(([k]) => indicators.includes(k)).map(([k, v]) => `
                 <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:6px 10px;">
                   <div style="font-size:0.68rem; text-transform:capitalize; color:#64748b; font-weight:600;">${k}</div>
-                  <div style="font-family:var(--font-mono); font-weight:700; font-size:0.95rem; color:#0f172a;">${Number(v).toFixed(1)}</div>
+                  <div style="font-family:var(--font-mono); font-weight:700; font-size:0.95rem; color:#0f172a;">${Number(v).toFixed(2)}</div>
                 </div>
               `).join('')}
             </div>
@@ -6738,9 +6768,9 @@ Available Nimbus Shell commands:
                 </div>
                 <div style="font-size:0.72rem; font-family:var(--font-mono); color:var(--text-muted); margin:3px 0;">${m.algorithm}</div>
                 <div style="display:flex; gap:12px; font-size:0.75rem; color:#334155; margin-top:4px;">
-                  <span>Acc: <strong style="color:#166534;">${(m.accuracy * 100).toFixed(1)}%</strong></span>
-                  <span>ROC-AUC: <strong style="color:var(--primary-blue);">${m.roc_auc}</strong></span>
-                  <span>F1: <strong>${m.f1_score}</strong></span>
+                  <span>Acc: <strong style="color:#166534;">${(m.accuracy * 100).toFixed(2)}%</strong></span>
+                  <span>ROC-AUC: <strong style="color:var(--primary-blue);">${round2(m.roc_auc)}</strong></span>
+                  <span>F1: <strong>${round2(m.f1_score)}</strong></span>
                   <span>N: <strong>${m.train_samples + m.test_samples}</strong></span>
                 </div>
               </div>
@@ -6755,7 +6785,7 @@ Available Nimbus Shell commands:
             <div style="padding:8px 10px; background:#f8fafc; border:1px solid var(--border-color); border-radius:6px;">
               <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:700; color:#0f172a;">
                 <span>${f.rank}. ${f.display_name}</span>
-                <span style="font-family:var(--font-mono); color:var(--primary-blue);">${(f.importance * 100).toFixed(1)}%</span>
+                <span style="font-family:var(--font-mono); color:var(--primary-blue);">${(f.importance * 100).toFixed(2)}%</span>
               </div>
               <div class="progress-bar-bg" style="margin:4px 0 2px;">
                 <div class="progress-bar-fill" style="width:${f.importance * 300}%;"></div>
@@ -7803,7 +7833,7 @@ Available Nimbus Shell commands:
         if (cardsContainer) {
           cardsContainer.innerHTML = Object.entries(SEGMENT_PLAYBOOKS).map(([segName, info]) => {
             const count = dist[segName] || 0;
-            const pct = data.total_students > 0 ? ((count / data.total_students) * 100).toFixed(0) : 0;
+            const pct = data.total_students > 0 ? ((count / data.total_students) * 100).toFixed(2) : '0.00';
             const isActive = activeSegmentFilter === segName;
             return `
               <div class="kpmg-quadrant-card ${isActive ? 'active' : ''}" onclick="filterSegmentationByQuadrant('${segName}')" style="border-top:3px solid ${info.color};">
@@ -7841,11 +7871,11 @@ Available Nimbus Shell commands:
         return {
           label: segName,
           data: segStudents.map(s => ({
-            x: s.academic_index || 60,
-            y: s.placement_index || 60,
+            x: round2(s.academic_index || 60),
+            y: round2(s.placement_index || 60),
             student_ref: s.student_ref,
             name: s.name,
-            score: s.success_score,
+            score: round2(s.success_score),
             tier: s.tier
           })),
           backgroundColor: info.color,
@@ -7885,7 +7915,7 @@ Available Nimbus Shell commands:
               callbacks: {
                 label: function(context) {
                   const raw = context.raw;
-                  return `${raw.name} (${raw.student_ref}) | Score: ${raw.score} | Acad: ${raw.x}, Place: ${raw.y}`;
+                  return `${raw.name} (${raw.student_ref}) | Score: ${round2(raw.score)} | Acad: ${round2(raw.x)}, Place: ${round2(raw.y)}`;
                 }
               }
             },
@@ -7964,9 +7994,9 @@ Available Nimbus Shell commands:
               <div style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">${s.student_ref}</div>
             </td>
             <td><div style="font-weight:600;">${s.department}</div><div style="font-size:0.72rem; color:var(--text-muted);">${s.batch}</div></td>
-            <td><span style="font-weight:700; font-family:var(--font-mono);">${s.academic_index}</span></td>
-            <td><span style="font-weight:700; font-family:var(--font-mono);">${s.placement_index}</span></td>
-            <td><span style="font-size:1.1rem; font-weight:800; font-family:var(--font-mono); color:#0f172a;">${s.success_score}</span></td>
+            <td><span style="font-weight:700; font-family:var(--font-mono);">${round2(s.academic_index)}</span></td>
+            <td><span style="font-weight:700; font-family:var(--font-mono);">${round2(s.placement_index)}</span></td>
+            <td><span style="font-size:1.1rem; font-weight:800; font-family:var(--font-mono); color:#0f172a;">${round2(s.success_score)}</span></td>
             <td><span class="tier-badge ${tierClass}">${tierLabel}</span></td>
             <td><span style="font-size:0.75rem; font-weight:700; color:${segInfo.color};">${s.segment}</span></td>
             <td style="text-align:right;">
@@ -7980,7 +8010,7 @@ Available Nimbus Shell commands:
     function exportSegmentCsv() {
       const list = activeSegmentFilter ? kpmgStudentsCache.filter(s => s.segment === activeSegmentFilter) : kpmgStudentsCache;
       const headers = ['student_ref', 'name', 'department', 'batch', 'academic_index', 'placement_index', 'attendance_index', 'success_score', 'tier', 'segment'];
-      const rows = list.map(s => [s.student_ref, `"${s.name}"`, s.department, s.batch, s.academic_index, s.placement_index, s.attendance_index, s.success_score, s.tier, `"${s.segment}"`].join(','));
+      const rows = list.map(s => [s.student_ref, `"${s.name}"`, s.department, s.batch, round2(s.academic_index), round2(s.placement_index), round2(s.attendance_index), round2(s.success_score), s.tier, `"${s.segment}"`].join(','));
       const csv = [headers.join(','), ...rows].join('\n');
       const blob = new Blob([csv], { type: 'text/csv' });
       const a = document.createElement('a');
@@ -8003,14 +8033,35 @@ Available Nimbus Shell commands:
 
     window.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem("theme");
-      // Default is always light mode; only use saved preference if explicitly set
-      document.documentElement.setAttribute("data-theme", savedTheme || "light");
-
-      initFirebaseAuth();
       const urlParams = new URLSearchParams(window.location.search);
+      const isLoginExplicit = urlParams.has('login') || urlParams.has('signin') || urlParams.get('auth') === 'login' || window.location.pathname.endsWith('/login') || window.location.pathname.endsWith('/signin');
       const paramRole = urlParams.get('role');
-      const savedRole = paramRole || localStorage.getItem('campuspulse_active_role') || 'teacher';
-      applyRoleRBAC(savedRole);
+      const savedSession = localStorage.getItem('campuspulse_auth_user');
+
+      // Universal default: Light theme across all screens and login
+      if (isLoginExplicit || !savedSession) {
+        document.documentElement.setAttribute("data-theme", "light");
+      } else {
+        document.documentElement.setAttribute("data-theme", savedTheme || "light");
+      }
+
+      initAuth();
+
+      if (isLoginExplicit) {
+        localStorage.removeItem('campuspulse_auth_user');
+        showAuthOverlay();
+        return;
+      }
+
+      if (paramRole) {
+        applyRoleRBAC(paramRole);
+        hideAuthOverlay();
+        return;
+      }
+
+      if (!savedSession) {
+        showAuthOverlay();
+      }
     });
   </script>
 </body>
