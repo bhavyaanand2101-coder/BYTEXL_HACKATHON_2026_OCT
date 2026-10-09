@@ -132,6 +132,14 @@ def compute_assessment_sub_score(
     if expected_time_min is None or expected_time_min <= 0:
         raise ValueError("expected_time_min must be positive and present")
 
+    # Defensive NaN sanitization
+    if total_score is None or math.isnan(total_score):
+        total_score = 0.0
+    if time_spent_min is None or math.isnan(time_spent_min) or time_spent_min <= 0:
+        time_spent_min = expected_time_min
+    if plag_avg is None or math.isnan(plag_avg):
+        plag_avg = 0.0
+
     normalized_score = clamp((total_score / max_test_score) * 100.0, 0.0, 100.0)
     
     # speed_score: under-time flagged as suspicious, not rewarded

@@ -47,7 +47,7 @@ def compute_file_sha256(file_path: Path) -> str:
 def map_row_to_canonical(raw_dict: Dict[str, Any]) -> Dict[str, Any]:
     mapped: Dict[str, Any] = {}
     # Map alphanumeric cleaned key -> original key
-    normalized_keys = {re.sub(r"[^a-z0-9]", "", str(k).strip().lower()): k for k in raw_dict}
+    normalized_keys = {re.sub(r"[^a-z0-9]", "", str(k).strip().lower()): k for k in raw_dict if k is not None}
 
     for canonical_field, aliases in CANONICAL_COLUMN_MAP.items():
         found = False
@@ -55,7 +55,10 @@ def map_row_to_canonical(raw_dict: Dict[str, Any]) -> Dict[str, Any]:
             norm_alias = re.sub(r"[^a-z0-9]", "", alias.strip().lower())
             if norm_alias in normalized_keys:
                 orig_key = normalized_keys[norm_alias]
-                mapped[canonical_field] = raw_dict[orig_key]
+                val = raw_dict[orig_key]
+                if isinstance(val, float) and (val != val):  # math.isnan check
+                    val = None
+                mapped[canonical_field] = val
                 found = True
                 break
         if not found:
@@ -64,25 +67,39 @@ def map_row_to_canonical(raw_dict: Dict[str, Any]) -> Dict[str, Any]:
     # Fallback heuristics for non-standard or custom column headers
     if mapped.get("roll_number") is None:
         for k, v in raw_dict.items():
+            if v is None:
+                continue
+            v_str = str(v).strip()
+            if not v_str or v_str.lower() in ("nan", "none", "null"):
+                continue
             k_low = str(k).lower()
-            if any(term in k_low for term in ["roll", "reg", "enrol", "urn", "prn", "usn", "id", "seat", "admit"]) and v is not None and str(v).strip():
-                mapped["roll_number"] = str(v).strip()
+            if any(term in k_low for term in ["roll", "reg", "enrol", "urn", "prn", "usn", "id", "seat", "admit"]):
+                mapped["roll_number"] = v_str
                 break
 
     if mapped.get("name") is None:
         for k, v in raw_dict.items():
+            if v is None:
+                continue
+            v_str = str(v).strip()
+            if not v_str or v_str.lower() in ("nan", "none", "null"):
+                continue
             k_low = str(k).lower()
-            if any(term in k_low for term in ["name", "student", "cand", "learner", "person"]) and v is not None and str(v).strip():
-                mapped["name"] = str(v).strip()
+            if any(term in k_low for term in ["name", "student", "cand", "learner", "person"]):
+                mapped["name"] = v_str
                 break
 
     if mapped.get("total_score") is None:
         for k, v in raw_dict.items():
+            if v is None:
+                continue
             k_low = str(k).lower()
             if any(term in k_low for term in ["score", "mark", "point", "grade", "total", "val", "result", "pct"]):
                 try:
-                    mapped["total_score"] = float(v)
-                    break
+                    f_val = float(v)
+                    if not (isinstance(f_val, float) and (f_val != f_val)):
+                        mapped["total_score"] = f_val
+                        break
                 except (ValueError, TypeError):
                     pass
 
@@ -134,14 +151,16 @@ def read_file_rows(file_path: Path) -> List[Dict[str, Any]]:
             return result
         except Exception:
             df = pd.read_excel(file_path)
-            return df.to_dict(orient="records")
+            return df.dropna(how="all").to_dict(orient="records")
     elif suffix in (".csv", ".txt"):
-        try:
-            df = pd.read_csv(file_path)
-            return df.to_dict(orient="records")
-        except Exception:
-            df = pd.read_csv(file_path, encoding="latin1")
-            return df.to_dict(orient="records")
+        for enc in ("utf-8-sig", "utf-8", "latin1", "cp1252"):
+            try:
+                df = pd.read_csv(file_path, encoding=enc)
+                return df.dropna(how="all").to_dict(orient="records")
+            except Exception:
+                continue
+        df = pd.read_csv(file_path, encoding="latin1")
+        return df.dropna(how="all").to_dict(orient="records")
     else:
         raise ValueError(f"Unsupported file format: {suffix}")
 

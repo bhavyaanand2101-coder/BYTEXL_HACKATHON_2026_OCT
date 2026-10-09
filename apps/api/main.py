@@ -7,6 +7,7 @@ deterministic scoring routes, explainability payloads, and PII scope protections
 from __future__ import annotations
 
 import datetime
+import logging
 import os
 import shutil
 import sys
@@ -14,6 +15,8 @@ import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+logger = logging.getLogger("campuspulse.api")
 
 # Ensure project root is in sys.path across serverless and container runtimes
 _PROJECT_ROOT = str(Path(__file__).resolve().parent.parent.parent)
@@ -306,6 +309,7 @@ def upload_raw_file(
         INGESTION_RUNS_CACHE.append(res)
         return make_envelope(res)
     except Exception as e:
+        db.rollback()
         logger.error(f"Ingestion failed for {file.filename}: {e}", exc_info=True)
         raise HTTPException(status_code=400, detail=f"Failed to process sheet: {str(e)}")
 
@@ -327,6 +331,7 @@ def ingest_preset_file(preset_name: str, db: Session = Depends(get_db)):
         INGESTION_RUNS_CACHE.append(res)
         return make_envelope(res)
     except Exception as e:
+        db.rollback()
         logger.error(f"Preset ingestion failed for {preset_name}: {e}", exc_info=True)
         raise HTTPException(status_code=400, detail=f"Failed to execute preset {preset_name}: {str(e)}")
 

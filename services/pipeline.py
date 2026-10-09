@@ -8,6 +8,7 @@ from __future__ import annotations
 import datetime
 import hashlib
 import json
+import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -173,25 +174,57 @@ def execute_pipeline(
         enrich = entry["enrich"]
 
         # Student entity
-        student = session.query(Student).filter(Student.student_ref == item["student_ref"]).first()
+        student = None
+        if item.get("roll_number"):
+            student = session.query(Student).filter(Student.roll_number == item["roll_number"]).first()
         if not student:
-            student = Student(
-                student_ref=item["student_ref"],
-                roll_number=item.get("roll_number"),
-                name=item.get("name"),
-                department=item.get("department", "CSE"),
-                batch=item.get("batch", "CSE 2029"),
-                section=item.get("section", "UNKNOWN_SECTION"),
-                advisor_id=advisor.id,
-                is_quarantined=item.get("is_quarantined", False),
-                quarantine_reason=item.get("quarantine_reason"),
-            )
-            session.add(student)
-            session.commit()
-            session.refresh(student)
+            student = session.query(Student).filter(Student.student_ref == item["student_ref"]).first()
+
+        if not student:
+            try:
+                student = Student(
+                    student_ref=item["student_ref"],
+                    roll_number=item.get("roll_number"),
+                    name=item.get("name") or "Student",
+                    department=item.get("department", "CSE"),
+                    batch=item.get("batch", "CSE 2029"),
+                    section=item.get("section", "UNKNOWN_SECTION"),
+                    advisor_id=advisor.id,
+                    is_quarantined=item.get("is_quarantined", False),
+                    quarantine_reason=item.get("quarantine_reason"),
+                )
+                session.add(student)
+                session.commit()
+                session.refresh(student)
+            except Exception:
+                session.rollback()
+                # Re-query in case another row or transaction already committed it
+                student = None
+                if item.get("roll_number"):
+                    student = session.query(Student).filter(Student.roll_number == item["roll_number"]).first()
+                if not student:
+                    student = session.query(Student).filter(Student.student_ref == item["student_ref"]).first()
+                if not student:
+                    fallback_ref = f"stu_{uuid.uuid4().hex[:12]}"
+                    student = Student(
+                        student_ref=fallback_ref,
+                        roll_number=None,
+                        name=item.get("name") or "Student",
+                        department=item.get("department", "CSE"),
+                        batch=item.get("batch", "CSE 2029"),
+                        section=item.get("section", "UNKNOWN_SECTION"),
+                        advisor_id=advisor.id,
+                    )
+                    session.add(student)
+                    session.commit()
+                    session.refresh(student)
         else:
             student.batch = item.get("batch", student.batch)
             student.section = item.get("section", student.section)
+            if item.get("name") and (not student.name or student.name == "Student"):
+                student.name = item.get("name")
+            if item.get("roll_number") and not student.roll_number:
+                student.roll_number = item.get("roll_number")
             session.commit()
 
         # Assessment Result
