@@ -994,7 +994,7 @@ def get_assessment_analytics(db: Session = Depends(get_db)):
 @app.get("/api/v1/nimbus/cluster-status")
 def get_nimbus_cluster_status():
     return make_envelope({
-        "cluster_name": "krm-parul-cloud-01",
+        "cluster_name": "apex-cloud-cluster-01",
         "status": "HEALTHY",
         "uptime": "99.98%",
         "nodes": [
@@ -1068,7 +1068,7 @@ SCHEDULE_EVENTS = [
         "title": "Section C — Weekly Placement Coding Masterclass",
         "student_ref": "cohort_sec_c",
         "student_name": "Section C (All Students)",
-        "advisor_name": "Parul Lead Trainer",
+        "advisor_name": "Apex Lead Technical Trainer",
         "date": "2026-10-09",
         "time": "11:00 AM",
         "type": "Batch Masterclass",
@@ -1151,8 +1151,8 @@ PROJECT_BANK_ITEMS = [
 COLLEGE_LOGIN_ACTIVITY = [
     {
         "student_name": "Archita",
-        "student_email": "2501730197@krmu.edu.in",
-        "batch": "KRMU_2029_AIML_E",
+        "student_email": "2501730197@apex.edu",
+        "batch": "AIT_2029_AIML_E",
         "last_seen": "1 minute ago",
         "status": "Active",
         "login_count_this_week": 5,
@@ -1160,8 +1160,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Sahil Yadav",
-        "student_email": "stu_9f9974d49a1b@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_C",
+        "student_email": "stu_9f9974d49a1b@apex.edu",
+        "batch": "AIT_2029_CSE_C",
         "last_seen": "4 minutes ago",
         "status": "Active",
         "login_count_this_week": 4,
@@ -1169,8 +1169,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Somay Sehrawat",
-        "student_email": "stu_24b7672237ac@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_C",
+        "student_email": "stu_24b7672237ac@apex.edu",
+        "batch": "AIT_2029_CSE_C",
         "last_seen": "12 minutes ago",
         "status": "Active",
         "login_count_this_week": 6,
@@ -1178,8 +1178,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Harshit Joon",
-        "student_email": "stu_0f0a2d4e0c80@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_C",
+        "student_email": "stu_0f0a2d4e0c80@apex.edu",
+        "batch": "AIT_2029_CSE_C",
         "last_seen": "18 minutes ago",
         "status": "Active",
         "login_count_this_week": 3,
@@ -1187,8 +1187,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Aarav Sharma",
-        "student_email": "2023cse001@campuspulse.edu",
-        "batch": "CSE_2029_Sec_C",
+        "student_email": "2023cse001@apex.edu",
+        "batch": "AIT_2029_CSE_C",
         "last_seen": "22 minutes ago",
         "status": "Active",
         "login_count_this_week": 7,
@@ -1196,8 +1196,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Raunak Kumar",
-        "student_email": "stu_5239_krmu@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_C",
+        "student_email": "stu_5239_ait@apex.edu",
+        "batch": "AIT_2029_CSE_C",
         "last_seen": "35 minutes ago",
         "status": "Active",
         "login_count_this_week": 4,
@@ -1205,8 +1205,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Tanvi Verma",
-        "student_email": "tanvi.v@krmu.edu.in",
-        "batch": "KRMU_2029_AIML_E",
+        "student_email": "tanvi.v@apex.edu",
+        "batch": "AIT_2029_AIML_E",
         "last_seen": "48 minutes ago",
         "status": "Active",
         "login_count_this_week": 5,
@@ -1214,8 +1214,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Rohan Iyer",
-        "student_email": "rohan.i@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_D",
+        "student_email": "rohan.i@apex.edu",
+        "batch": "AIT_2029_CSE_D",
         "last_seen": "1 hour ago",
         "status": "Active",
         "login_count_this_week": 4,
@@ -1223,8 +1223,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Neha Gupta",
-        "student_email": "neha.g@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_D",
+        "student_email": "neha.g@apex.edu",
+        "batch": "AIT_2029_CSE_D",
         "last_seen": "2 hours ago",
         "status": "Active",
         "login_count_this_week": 3,
@@ -1232,8 +1232,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Vikram Malhotra",
-        "student_email": "vikram.m@krmu.edu.in",
-        "batch": "KRMU_2029_AIML_E",
+        "student_email": "vikram.m@apex.edu",
+        "batch": "AIT_2029_AIML_E",
         "last_seen": "3 hours ago",
         "status": "Active",
         "login_count_this_week": 4,
@@ -1241,8 +1241,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Ananya Sen",
-        "student_email": "ananya.sen@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_C",
+        "student_email": "ananya.sen@apex.edu",
+        "batch": "AIT_2029_CSE_C",
         "last_seen": "5 hours ago",
         "status": "Active",
         "login_count_this_week": 5,
@@ -1250,8 +1250,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Sneha Patel",
-        "student_email": "sneha.p@krmu.edu.in",
-        "batch": "KRMU_2029_CSE_D",
+        "student_email": "sneha.p@apex.edu",
+        "batch": "AIT_2029_CSE_D",
         "last_seen": "8 hours ago",
         "status": "Active",
         "login_count_this_week": 2,
@@ -1259,8 +1259,8 @@ COLLEGE_LOGIN_ACTIVITY = [
     },
     {
         "student_name": "Karthik Raman",
-        "student_email": "karthik.r@krmu.edu.in",
-        "batch": "KRMU_2029_AIML_E",
+        "student_email": "karthik.r@apex.edu",
+        "batch": "AIT_2029_AIML_E",
         "last_seen": "1 day ago",
         "status": "Inactive",
         "login_count_this_week": 1,
@@ -1320,7 +1320,7 @@ def get_college_telemetry():
         "courses": [
             {"title": "CS301: Advanced Data Structures & Algorithms", "faculty": "Dr. Ananya Sharma", "progress_pct": 74, "avg_quiz": "84.5%"},
             {"title": "CS304: Database Management & Query Tuning", "faculty": "Prof. Rajesh Gupta", "progress_pct": 82, "avg_quiz": "88.2%"},
-            {"title": "CS308: Cloud Architecture & DevOps", "faculty": "Parul Trainers", "progress_pct": 65, "avg_quiz": "79.0%"}
+            {"title": "CS308: Cloud Architecture & DevOps", "faculty": "Apex Senior Faculty", "progress_pct": 65, "avg_quiz": "79.0%"}
         ],
         "leaderboard": [
             {"rank": 1, "name": "Sahil Yadav", "batch": "CSE 2029", "score": 98.4, "solved": 142, "streak": "18 Days"},
@@ -1330,7 +1330,7 @@ def get_college_telemetry():
             {"rank": 5, "name": "Harshit Joon", "batch": "CSE 2029", "score": 91.0, "solved": 118, "streak": "9 Days"}
         ],
         "live": [
-            {"title": "Dynamic Programming Masterclass: Memoization vs Tabulation", "trainer": "Parul Lead Trainer", "time": "Today, 04:00 PM", "attendees": 184, "status": "Upcoming"},
+            {"title": "Dynamic Programming Masterclass: Memoization vs Tabulation", "trainer": "Apex Lead Technical Trainer", "time": "Today, 04:00 PM", "attendees": 184, "status": "Upcoming"},
             {"title": "System Design: Rate Limiters & Token Bucket Algorithm", "trainer": "Dr. Ananya Sharma", "time": "Yesterday", "attendees": 210, "status": "Completed (Recording Ready)"}
         ],
         "video": [
